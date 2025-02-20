@@ -100,9 +100,10 @@ function adicionarVenda() {
     document.getElementById('pagamentoImediato').checked = false;
     document.getElementById('formaPagamentoGroup').style.display = 'none';
 
+    carregarInfoBloco();
+
     document.getElementById('nome').focus();
 
-    carregarInfoBloco();
     atualizarListaVendas();
     atualizarResumo();
 
@@ -245,6 +246,31 @@ function atualizarTotais() {
         .reduce((total, venda) => total + venda.valor, 0);
     const totalReceber = totalVendido - totalRecebido;
     
+    document.getElementById('totalVendido').textContent = totalVendido.toFixed(2);
+    document.getElementById('totalRecebido').textContent = totalRecebido.toFixed(2);
+    document.getElementById('totalReceber').textContent = totalReceber.toFixed(2);
+}
+
+function atualizarResumo() {
+    const blocoId = localStorage.getItem('blocoAtual');
+    const blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
+    const bloco = blocos.find(b => b.id === blocoId);
+    
+    if (!bloco || !bloco.vendas) return;
+
+    let totalVendido = 0;
+    let totalRecebido = 0;
+    
+    bloco.vendas.forEach(venda => {
+        const valorTotal = venda.valor * venda.quantidade;
+        totalVendido += valorTotal;
+        if (venda.pago) {
+            totalRecebido += valorTotal;
+        }
+    });
+
+    const totalReceber = totalVendido - totalRecebido;
+
     document.getElementById('totalVendido').textContent = totalVendido.toFixed(2);
     document.getElementById('totalRecebido').textContent = totalRecebido.toFixed(2);
     document.getElementById('totalReceber').textContent = totalReceber.toFixed(2);

@@ -168,8 +168,8 @@ button:hover {
 }
 
 .bloco-header {
-    margin-bottom: 15px;
-    padding-right: 45px;
+    /* margin-bottom: 15px; */
+    /* padding-right: 45px; */
 }
 
 .header-principal {
@@ -178,7 +178,9 @@ button:hover {
 
 .header-principal h2 {
     margin-bottom: 5px;
+    margin-top: 0px;
     color: #2c3e50;
+    font-size: 1.3em;
 }
 
 .bloco-header h3 {
@@ -228,7 +230,8 @@ button:hover {
     display: flex;
     flex-wrap: nowrap;
     gap: 10px;
-    margin-bottom: 15px;
+    margin-top: 15px;
+    /* margin-bottom: 15px; */
     width: 100%;
     justify-content: space-between;
 }
@@ -271,7 +274,7 @@ button:hover {
 }
 
 .checkbox-group {
-    margin: 10px 0;
+    margin: 12px 0;
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
@@ -291,7 +294,7 @@ button:hover {
     flex-wrap: wrap;
     gap: 15px;
     align-items: flex-end;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .destaque {
@@ -363,7 +366,7 @@ button:hover {
 .campos-valor {
     display: flex;
     gap: 15px;
-    margin-bottom: 15px;
+    margin-bottom: -15px;
 }
 
 .campos-valor .form-group {
@@ -640,6 +643,12 @@ button:hover {
     text-align: center;
 }
 
+.titulo-lista-vendas {
+    color: #1a1a1a;
+    font-size: 1em;
+    margin-top: 25px;
+}
+
 /* Media Queries para Responsividade */
 @media (max-width: 600px) {
     body {
@@ -738,7 +747,7 @@ button:hover {
 
 @media (max-width: 360px) {
     .bloco-valores {
-        font-size: 0.8em;
+        font-size: 0.75em;
     }
 
     .info-label,
@@ -749,6 +758,10 @@ button:hover {
     button {
         padding: 10px 15px;
         font-size: 13px;
+    }
+
+    .lista-vendas-container {
+        max-height: 587px;
     }
 }
 
@@ -761,6 +774,10 @@ button:hover {
     .info-label, .info-value {
         font-size: 0.9em;
     }
+
+    .lista-vendas-container {
+        max-height: 587px;
+    }    
 }
 
 @media screen and (max-width: 412px) {
@@ -799,4 +816,8 @@ button:hover {
     .resumo-valor {
         font-size: 1em;
     }
+}
+
+#nome {
+    text-transform: uppercase;
 }

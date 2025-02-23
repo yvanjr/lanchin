@@ -13,6 +13,19 @@ window.onload = function() {
     atualizarResumo();
 };
 
+    // Selecionar conteúdo ao focar
+    document.getElementById('quantidade').addEventListener('focus', function() {
+        this.select();
+    });
+    
+    document.getElementById('valor').addEventListener('focus', function() {
+        this.select();
+    });
+
+    document.getElementById('nome').addEventListener('focus', function() {
+        this.select();
+    });    
+
 function carregarInfoBloco() {
     const blocoId = localStorage.getItem('blocoAtual');
     const blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
@@ -24,7 +37,7 @@ function carregarInfoBloco() {
         // Adicionar informação de valores abaixo do título
         const configInfo = document.getElementById('config-info');
         configInfo.className = 'bloco-valores';
-        configInfo.textContent = `Valor: R$ ${bloco.valorVenda.toFixed(2)} | R$ ${(bloco.valorVenda + bloco.valorBebida).toFixed(2)} (com bebida)`;
+        configInfo.textContent = `Valor: R$ ${bloco.valorVenda.toFixed(2)} | R$ ${(bloco.valorVenda + bloco.valorBebida).toFixed(2)} + bebida`;
         
         // Preencher valor considerando que a checkbox de bebida já vem marcada
         const valorTotal = bloco.valorVenda + bloco.valorBebida;
@@ -80,7 +93,7 @@ function adicionarVenda() {
     }
 
     const venda = {
-        nome,
+        nome: nome.toUpperCase(),
         quantidade,
         valor: valorUnitario,
         comBebida,
@@ -205,6 +218,7 @@ function confirmarExclusao(index) {
             blocos[blocoIndex].vendas.splice(index, 1);
             localStorage.setItem('blocos', JSON.stringify(blocos));
             atualizarListaVendas();
+            atualizarResumo();
         }
     }
 }

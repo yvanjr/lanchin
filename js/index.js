@@ -29,9 +29,9 @@ function mostrarBlocos() {
         
         elemento.innerHTML = `
             <div class="bloco-header">
-                <h3>${bloco.nomeLanche} - ${dataFormatada}</h3>
+                <h3>${bloco.nomeLanche} • ${dataFormatada}</h3>
                 <p class="bloco-valores">
-                    Valor: R$ ${bloco.valorVenda.toFixed(2)} | R$ ${(bloco.valorVenda + bloco.valorBebida).toFixed(2)} (com bebida)
+                    Valor: R$ ${bloco.valorVenda.toFixed(2)} | R$ ${(bloco.valorVenda + bloco.valorBebida).toFixed(2)} + bebida
                 </p>
             </div>
             <div class="bloco-info">
@@ -49,7 +49,7 @@ function mostrarBlocos() {
                 </div>
             </div>
             <button class="btn-config" onclick="event.stopPropagation(); editarBloco(${bloco.id})" title="Editar Configurações">
-                <i class="fas fa-cog"></i>
+                <i class="fas fa-ellipsis-v"></i>
             </button>
         `;
         

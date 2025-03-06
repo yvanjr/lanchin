@@ -2,23 +2,71 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Lanches - Igreja</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Controle de Lanches</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body class="pagina-inicial">
-    <h1>Controle de Lanches</h1>
+<body class="pagina-home">
+    <header>
+        <h1>Controle de Lanches</h1>
+        <p class="subtitulo">Sistema de gestão para vendas em eventos</p>
+    </header>
+
+    <div class="welcome-container">
+        <div class="welcome-message">
+            <h2>Bem-vindo ao sistema!</h2>
+            <p>Este sistema foi desenvolvido para facilitar o controle de vendas de lanches em eventos da igreja, permitindo organizar blocos de vendas, registrar clientes e calcular rendimentos.</p>
+            
+            <div class="dashboard-preview">
+                <p><i class="fas fa-chart-line"></i> Em breve: Gráficos de vendas e estatísticas!</p>
+            </div>
+        </div>
+
+        <div class="menu-cards">
+            <a href="pages/blocos.html" class="menu-card">
+                <i class="fas fa-list-alt"></i>
+                <h3>Blocos de Vendas</h3>
+                <p>Acesse e gerencie todos os blocos de vendas cadastrados</p>
+            </a>
+            
+            <a href="#" class="menu-card disabled" onclick="return false;">
+                <i class="fas fa-chart-pie"></i>
+                <h3>Estatísticas</h3>
+                <p>Visualize dados e relatórios sobre suas vendas</p>
+            </a>
+            
+            <a href="#" class="menu-card disabled" onclick="return false;">
+                <i class="fas fa-cog"></i>
+                <h3>Configurações</h3>
+                <p>Ajuste as configurações do sistema</p>
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Sistema de Controle de Lanches - Desenvolvido com carinho</p>
+    </footer>
     
-    <div class="destaque">
-        <h2>Blocos de Vendas</h2>
-        <button onclick="criarNovoBloco()">Criar Novo Bloco de Vendas</button>
-    </div>
-
-    <div id="lista-blocos">
-        <!-- Blocos serão inseridos aqui via JavaScript -->
-    </div>
-
-    <script src="js/index.js"></script>
+    <script src="js/home.js"></script>
+    <script>
+    // Detecção de orientação para melhor visualização em dispositivos móveis
+    function adjustForOrientation() {
+        const container = document.querySelector('.welcome-container');
+        
+        if (window.matchMedia("(orientation: landscape) and (max-height: 500px)").matches) {
+            container.style.flexDirection = 'row';
+        } else if (window.innerWidth < 900) {
+            container.style.flexDirection = 'column';
+        } else {
+            container.style.flexDirection = 'row';
+        }
+    }
+    
+    // Executar no carregamento e quando houver mudança de orientação
+    window.addEventListener('load', adjustForOrientation);
+    window.addEventListener('resize', adjustForOrientation);
+    window.addEventListener('orientationchange', adjustForOrientation);
+    </script>
 </body>
 </html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Blocos de Vendas - Controle de Lanches</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="pagina-blocos">
+    <button class="btn-voltar" onclick="window.location.href='../index.html'" title="Voltar para Início">
+        <i class="fas fa-angle-left"></i>
+    </button>
+    
+    <div class="header-blocos">
+        <h2>Blocos de Vendas</h2>
+    </div>
+    
+    <div id="lista-blocos">
+        <!-- Blocos serão inseridos aqui via JavaScript -->
+    </div>
+    
+    <!-- Loader para feedback visual durante carregamento de dados -->
+    <div id="loading" class="loading-container" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>Carregando blocos...</p>
+    </div>
+
+    <button class="fab" onclick="criarNovoBloco()" title="Criar Novo Bloco de Vendas">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <script src="../js/blocos.js"></script>
+    <script>
+    // Adicionar loader ao carregar a página
+    document.addEventListener('DOMContentLoaded', function() {
+        const loader = document.getElementById('loading');
+        
+        // Mostrar loader por breve momento para feedback visual
+        loader.style.display = 'flex';
+        
+        // Esconder loader após o carregamento dos blocos
+        setTimeout(function() {
+            loader.style.display = 'none';
+        }, 300);
+        
+        // Verificar se há blocos e ajustar a visualização para telas menores
+        const ajustarVisualizacao = function() {
+            // Verificar largura da tela
+            if (window.innerWidth <= 480) {
+                // Ajustar visualização para telas pequenas
+                const blocos = document.querySelectorAll('.bloco-vendas');
+                blocos.forEach(bloco => {
+                    // Garantir que o texto não quebre a interface
+                    const header = bloco.querySelector('.bloco-header h3');
+                    if (header && header.textContent.length > 25) {
+                        header.title = header.textContent;
+                        header.textContent = header.textContent.substring(0, 22) + '...';
+                    }
+                });
+            }
+        };
+        
+        // Executar após carregar blocos
+        setTimeout(ajustarVisualizacao, 500);
+        
+        // Ajustar ao redimensionar a tela
+        window.addEventListener('resize', ajustarVisualizacao);
+    });
+    </script>
+</body>
+</html> 

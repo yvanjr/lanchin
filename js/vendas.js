@@ -47,7 +47,33 @@ function carregarInfoBloco() {
 
 function toggleFormaPagamento() {
     const pagamentoImediato = document.getElementById('pagamentoImediato').checked;
-    document.getElementById('formaPagamentoGroup').style.display = pagamentoImediato ? 'block' : 'none';
+    const formaPagamentoGroup = document.getElementById('formaPagamentoGroup');
+    
+    if (pagamentoImediato) {
+        formaPagamentoGroup.style.display = 'block';
+        // Força um reflow para a transição funcionar
+        formaPagamentoGroup.offsetHeight;
+        
+        // Adiciona event listeners aos botões
+        document.querySelectorAll('#formaPagamentoGroup .opcao-pagamento').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove a classe ativa de todos os botões
+                document.querySelectorAll('#formaPagamentoGroup .opcao-pagamento').forEach(b => 
+                    b.classList.remove('ativo'));
+                // Adiciona a classe ativa ao botão clicado
+                this.classList.add('ativo');
+            });
+        });
+        
+        // Marca o primeiro botão como ativo por padrão
+        const primeiroBotao = document.querySelector('#formaPagamentoGroup .opcao-pagamento');
+        if (primeiroBotao) primeiroBotao.classList.add('ativo');
+    } else {
+        formaPagamentoGroup.style.display = 'none';
+        // Remove a classe ativa de todos os botões
+        document.querySelectorAll('#formaPagamentoGroup .opcao-pagamento').forEach(btn => 
+            btn.classList.remove('ativo'));
+    }
 }
 
 function atualizarValor() {
@@ -68,13 +94,19 @@ function atualizarValor() {
 function adicionarVenda() {
     const nome = document.getElementById('nome').value;
     const quantidade = parseInt(document.getElementById('quantidade').value);
-    const valorUnitario = parseFloat(document.getElementById('valor').value) / quantidade; // Obtém o valor unitário
+    const valorUnitario = parseFloat(document.getElementById('valor').value) / quantidade;
     const comBebida = document.getElementById('comBebida').checked;
     const pagamentoImediato = document.getElementById('pagamentoImediato').checked;
-    const formaPagamento = pagamentoImediato ? document.getElementById('formaPagamento').value : null;
+    const formaPagamento = pagamentoImediato ? 
+        document.querySelector('#formaPagamentoGroup .opcao-pagamento.ativo')?.getAttribute('data-forma') : null;
 
     if (!nome || !quantidade || !valorUnitario) {
         alert('Por favor, preencha todos os campos!');
+        return;
+    }
+
+    if (pagamentoImediato && !formaPagamento) {
+        alert('Por favor, selecione uma forma de pagamento!');
         return;
     }
 
@@ -223,6 +255,50 @@ function confirmarExclusao(index) {
     }
 }
 
+let vendaIndexAtual = null;
+
+function mostrarModalPagamento(index) {
+    vendaIndexAtual = index;
+    const modal = document.getElementById('modal-pagamento');
+    modal.classList.add('mostrar');
+    
+    // Adicionar event listeners para as opções de pagamento
+    document.querySelectorAll('.opcao-pagamento').forEach(opcao => {
+        opcao.onclick = function() {
+            const formaPagamento = this.getAttribute('data-forma');
+            confirmarPagamento(formaPagamento);
+        };
+    });
+}
+
+function fecharModalPagamento() {
+    const modal = document.getElementById('modal-pagamento');
+    modal.classList.remove('mostrar');
+    vendaIndexAtual = null;
+}
+
+function confirmarPagamento(formaPagamento) {
+    if (vendaIndexAtual === null) return;
+    
+    const blocoId = localStorage.getItem('blocoAtual');
+    const blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
+    const blocoIndex = blocos.findIndex(b => b.id === blocoId);
+    
+    if (blocoIndex === -1) {
+        alert('Bloco não encontrado!');
+        return;
+    }
+
+    const venda = blocos[blocoIndex].vendas[vendaIndexAtual];
+    venda.pago = true;
+    venda.formaPagamento = formaPagamento;
+
+    localStorage.setItem('blocos', JSON.stringify(blocos));
+    fecharModalPagamento();
+    atualizarListaVendas();
+    atualizarResumo();
+}
+
 function togglePagamento(index) {
     const blocoId = localStorage.getItem('blocoAtual');
     const blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
@@ -234,24 +310,18 @@ function togglePagamento(index) {
     }
 
     const venda = blocos[blocoIndex].vendas[index];
-    venda.pago = !venda.pago;
     
     if (venda.pago) {
-        const formaPagamento = prompt('Forma de pagamento (dinheiro/pix):', 'dinheiro');
-        if (formaPagamento && ['dinheiro', 'pix'].includes(formaPagamento.toLowerCase())) {
-            venda.formaPagamento = formaPagamento.toLowerCase();
-        } else {
-            venda.pago = false;
-            alert('Forma de pagamento inválida!');
-            return;
-        }
-    } else {
+        // Se já está pago, apenas estorna
+        venda.pago = false;
         venda.formaPagamento = null;
+        localStorage.setItem('blocos', JSON.stringify(blocos));
+        atualizarListaVendas();
+        atualizarResumo();
+    } else {
+        // Se não está pago, mostra o modal de pagamento
+        mostrarModalPagamento(index);
     }
-
-    localStorage.setItem('blocos', JSON.stringify(blocos));
-    atualizarListaVendas();
-    atualizarResumo();
 }
 
 function atualizarTotais() {
@@ -306,6 +376,9 @@ function editarVenda(index) {
     const venda = bloco.vendas[index];
     vendaEmEdicao = index;
 
+    // Alterar o título do formulário
+    document.querySelector('.form-title').textContent = 'Editar Venda';
+
     // Preencher os campos com os dados da venda
     document.getElementById('nome').value = venda.nome;
     document.getElementById('quantidade').value = venda.quantidade;
@@ -315,7 +388,14 @@ function editarVenda(index) {
     
     if (venda.pago) {
         document.getElementById('formaPagamentoGroup').style.display = 'block';
-        document.getElementById('formaPagamento').value = venda.formaPagamento || 'dinheiro';
+        // Marca o botão correspondente como ativo
+        document.querySelectorAll('#formaPagamentoGroup .opcao-pagamento').forEach(btn => {
+            if (btn.getAttribute('data-forma') === venda.formaPagamento) {
+                btn.classList.add('ativo');
+            } else {
+                btn.classList.remove('ativo');
+            }
+        });
     }
 
     // Ativar modo de edição
@@ -323,9 +403,19 @@ function editarVenda(index) {
         group.classList.add('modo-edicao');
     });
 
-    // Mostrar botões de edição e ocultar botão adicionar
+    // Mostrar botões de edição e ocultar botões de nova venda
     document.querySelector('.botoes-edicao').classList.add('ativo');
-    document.querySelector('.btn-adicionar').classList.add('oculto');
+    document.querySelector('.botoes-nova-venda').style.display = 'none';
+
+    // Mostrar o formulário
+    document.getElementById('form-venda').classList.add('mostrar');
+    document.querySelector('.fab-add-venda').style.display = 'none';
+
+    // Fechar o menu de opções
+    document.querySelectorAll('.venda-opcoes').forEach(op => {
+        op.classList.remove('mostrar');
+        op.closest('.venda-item').classList.remove('menu-ativo');
+    });
 
     // Rolar até o topo do formulário
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -340,15 +430,17 @@ function salvarEdicao() {
     const blocoId = localStorage.getItem('blocoAtual');
     const blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
     const blocoIndex = blocos.findIndex(b => b.id === blocoId);
+    const formaPagamento = document.getElementById('pagamentoImediato').checked ? 
+        document.querySelector('#formaPagamentoGroup .opcao-pagamento.ativo')?.getAttribute('data-forma') : null;
+        
     const venda = {
         nome: document.getElementById('nome').value,
         quantidade: parseInt(document.getElementById('quantidade').value),
-        valor: parseFloat(document.getElementById('valor').value) / parseInt(document.getElementById('quantidade').value), // Obtém o valor unitário
+        valor: parseFloat(document.getElementById('valor').value) / parseInt(document.getElementById('quantidade').value),
         comBebida: document.getElementById('comBebida').checked,
         pago: document.getElementById('pagamentoImediato').checked,
         timestamp: blocos[blocoIndex].vendas[vendaEmEdicao].timestamp,
-        formaPagamento: document.getElementById('pagamentoImediato').checked ? 
-            document.getElementById('formaPagamento').value : null
+        formaPagamento: formaPagamento
     };
 
     blocos[blocoIndex].vendas[vendaEmEdicao] = venda;
@@ -361,6 +453,9 @@ function salvarEdicao() {
 
 function cancelarEdicao() {
     vendaEmEdicao = null;
+
+    // Restaurar o título original do formulário
+    document.querySelector('.form-title').textContent = 'Nova Venda';
 
     // Limpar campos
     document.getElementById('nome').value = '';
@@ -375,13 +470,94 @@ function cancelarEdicao() {
         group.classList.remove('modo-edicao');
     });
 
-    // Ocultar botões de edição e mostrar botão adicionar
+    // Ocultar botões de edição e mostrar botões de nova venda
     document.querySelector('.botoes-edicao').classList.remove('ativo');
-    document.querySelector('.btn-adicionar').classList.remove('oculto');
+    document.querySelector('.botoes-nova-venda').style.display = 'flex';
+
+    // Ocultar o formulário
+    document.getElementById('form-venda').classList.remove('mostrar');
+    document.querySelector('.fab-add-venda').style.display = 'flex';
 
     carregarInfoBloco();
     atualizarListaVendas();
     atualizarResumo();
-
-    // document.getElementById('nome').focus();
 }
+
+function mostrarFormVenda() {
+    document.getElementById('form-venda').classList.add('mostrar');
+    document.querySelector('.fab-add-venda').style.display = 'none';
+    document.getElementById('nome').focus();
+}
+
+function ocultarFormVenda() {
+    document.getElementById('form-venda').classList.remove('mostrar');
+    document.querySelector('.fab-add-venda').style.display = 'flex';
+}
+
+// Inicialização do formulário e eventos
+document.addEventListener('DOMContentLoaded', function() {
+    ocultarFormVenda();
+    
+    // Verificar se há vendas e mostrar mensagem caso não haja
+    const verificarVendas = function() {
+        const listaVendas = document.getElementById('lista-vendas');
+        const semVendas = document.getElementById('sem-vendas');
+        
+        if (listaVendas.children.length === 0) {
+            semVendas.style.display = 'block';
+        } else {
+            semVendas.style.display = 'none';
+        }
+    };
+    
+    // Executar na inicialização
+    verificarVendas();
+    
+    // Observar mudanças na lista de vendas
+    const observer = new MutationObserver(verificarVendas);
+    observer.observe(document.getElementById('lista-vendas'), { childList: true });
+    
+    // Fechar formulário ao clicar fora dele
+    document.addEventListener('click', function(event) {
+        const formVenda = document.getElementById('form-venda');
+        const fabAddVenda = document.querySelector('.fab-add-venda');
+        
+        if (formVenda.classList.contains('mostrar') && 
+            !formVenda.contains(event.target) && 
+            !fabAddVenda.contains(event.target)) {
+            // Verificar se não há dados preenchidos antes de fechar
+            const nome = document.getElementById('nome').value;
+            if (!nome.trim()) {
+                ocultarFormVenda();
+            }
+        }
+    });
+    
+    // Ajustar scroll em inputs para evitar problemas em telas pequenas
+    const inputs = document.querySelectorAll('input, select');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            setTimeout(() => {
+                this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        });
+    });
+    
+    // Ocultar formulário quando a venda for adicionada com sucesso
+    const btnAdicionar = document.querySelector('.btn-adicionar');
+    const originalAddHandler = btnAdicionar.onclick;
+    btnAdicionar.onclick = function() {
+        const result = adicionarVenda();
+        if (result !== false) {
+            ocultarFormVenda();
+        }
+        return result;
+    };
+
+    // Fechar modal ao clicar fora
+    document.getElementById('modal-pagamento').addEventListener('click', function(event) {
+        if (event.target === this) {
+            fecharModalPagamento();
+        }
+    });
+});

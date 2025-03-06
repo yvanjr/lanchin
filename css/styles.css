@@ -4,11 +4,13 @@
 /* Estilos gerais */
 body {
     font-family: 'Poppins', Arial, sans-serif;
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 0 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
     line-height: 1.5;
     box-sizing: border-box;
+    color: #333;
+    background-color: #f8f9fa;
 }
 
 /* Reset box-sizing */
@@ -23,7 +25,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .form-group {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
     width: 100%;
     position: relative;
 }
@@ -76,11 +78,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .form-group.modo-edicao input {
-    border-color: #ffc107;
+    /* border-color: #ffc107; */
 }
 
 .form-group.modo-edicao label {
-    color: #ffc107;
+    /* color: #ffc107; */
 }
 
 button {
@@ -89,18 +91,25 @@ button {
     color: white;
     border: none;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 8px;
     font-family: 'Poppins', Arial, sans-serif;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
     width: auto;
     white-space: nowrap;
     font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 button:hover {
     background-color: #45a049;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 .cliente {
@@ -120,36 +129,46 @@ button:hover {
 }
 
 .bloco-vendas {
-    border: 1px solid #ddd;
+    border: none;
     padding: 15px;
-    margin: 10px 0;
-    border-radius: 4px;
+    border-radius: 12px;
     background-color: #fff;
-    transition: all 0.2s ease-in-out;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .bloco-vendas:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    border-color: #adb5bd;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .btn-config {
     position: absolute;
     top: 15px;
     right: 15px;
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     padding: 0;
-    border-radius: 50%;
+    border-radius: 8px;
     background-color: transparent;
-    border: 1.5px solid #ddd;
+    border: none;
     color: #6c757d;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease-in-out;
+    box-shadow: none;
+}
+
+.btn-config:hover {
+    background-color: #f8f9fa;
+    color: #4CAF50;
+    transform: none;
+    box-shadow: none;
 }
 
 .btn-config i {
@@ -157,51 +176,55 @@ button:hover {
     transition: transform 0.3s ease;
 }
 
-.btn-config:hover {
-    background-color: #f8f9fa;
-    border-color: #4CAF50;
-    color: #4CAF50;
-}
-
-.btn-config:hover i {
+/* .btn-config:hover i {
     transform: rotate(45deg);
-}
+} */
 
 .bloco-header {
-    /* margin-bottom: 15px; */
-    /* padding-right: 45px; */
+    margin-bottom: 12px;
 }
 
 .header-principal {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .header-principal h2 {
+    display: flex;
     margin-bottom: 5px;
     margin-top: 0px;
     color: #2c3e50;
     font-size: 1.3em;
+    justify-content: center;
 }
 
 .bloco-header h3 {
-    margin: 0;
     color: #2c3e50;
-    word-break: break-word;
+    font-size: 1.2em;
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-weight: 600;
 }
 
 .bloco-valores {
+    display: flex;
     margin: 5px 0 0 0;
     font-size: 0.9em;
     color: #6c757d;
     font-family: 'Poppins', Arial, sans-serif;
     word-break: break-word;
+    justify-content: flex-start;
+}
+
+/* Alinhamento centralizado específico para a página de vendas */
+.pagina-vendas .bloco-valores {
+    justify-content: center;
 }
 
 .resumo-header {
     display: flex;
-    gap: 25px;
+    gap: 20px;
     flex-wrap: wrap;
-    padding-top: 15px;
+    padding-top: 12px;
     border-top: 1px solid #e0e0e0;
 }
 
@@ -229,34 +252,35 @@ button:hover {
 .bloco-info {
     display: flex;
     flex-wrap: nowrap;
-    gap: 10px;
-    margin-top: 15px;
-    /* margin-bottom: 15px; */
-    width: 100%;
+    gap: 15px;
+    margin-top: 5px;
+    padding-top: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-top: 1px solid #f0f0f0;
     justify-content: space-between;
 }
 
 .info-item {
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 5px;
-    white-space: nowrap;
-    font-size: 0.9em;
 }
 
 .info-label {
     font-family: 'Poppins', Arial, sans-serif;
-    font-size: 0.95em;
-    color: #2c3e50;
-    font-weight: 500;
+    font-size: 0.8em;
+    color: #6c757d;
+    /* text-transform: uppercase; */
+    letter-spacing: 0.5px;
 }
 
 .info-value {
     font-family: 'Poppins', Arial, sans-serif;
-    font-size: 0.95em;
-    color: #495057;
-    min-width: 1.5em;
-    text-align: left;
+    font-size: 1.1em;
+    color: #2c3e50;
+    font-weight: 600;
 }
 
 .destaque-receber {
@@ -265,19 +289,22 @@ button:hover {
 }
 
 .lista-vendas-container {
-    max-height: 400px;
+    max-height: calc(100vh - 250px);
     overflow-y: auto;
-    border: 1px solid #ddd;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
+    border: none;
+    padding: 0 5px;
+    margin: 0;
+    border-radius: 8px;
+    background-color: transparent;
 }
 
 .checkbox-group {
     margin: 12px 0;
-    display: flex;
-    flex-wrap: wrap;
     gap: 15px;
+    display: flex;
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+    align-items: center;
 }
 
 .checkbox-group label {
@@ -287,6 +314,7 @@ button:hover {
     margin-right: 15px;
     font-family: 'Poppins', Arial, sans-serif;
     font-size: 0.82em;
+    white-space: nowrap;
 }
 
 .form-row {
@@ -298,11 +326,12 @@ button:hover {
 }
 
 .destaque {
-    background-color: #f8f9fa;
+    background-color: #fff;
     padding: 15px;
-    border-radius: 4px;
+    border-radius: 8px;
     margin-bottom: 20px;
     position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .resumo {
@@ -367,11 +396,13 @@ button:hover {
     display: flex;
     gap: 15px;
     margin-bottom: -15px;
+    flex-direction: row !important;
 }
 
 .campos-valor .form-group {
     flex: 1;
     min-width: 0; /* Evita que os inputs estourem o container */
+    max-width: none;
 }
 
 .campos-valor input {
@@ -381,13 +412,14 @@ button:hover {
 
 .venda-item {
     background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 4px;
+    border: none;
+    border-radius: 10px;
     padding: 15px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     cursor: pointer;
     position: relative;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .venda-item:hover {
@@ -464,37 +496,58 @@ button:hover {
 }
 
 .btn-voltar {
-    position: absolute;
+    position: fixed;
     top: 15px;
-    right: 15px;
-    width: 35px;
-    height: 35px;
+    left: 15px;
     padding: 0;
-    border-radius: 50%;
     background-color: transparent;
-    border: 1.5px solid #ddd;
-    color: #6c757d;
+    border: none;
+    color: #2c3e50;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s ease-in-out;
     cursor: pointer;
+    z-index: 10;
+    box-shadow: none;
+    width: 40px;
+    height: 40px;
 }
 
 .btn-voltar i {
-    font-size: 16px;
+    font-size: 24px;
 }
 
 .btn-voltar:hover {
-    background-color: #f8f9fa;
-    border-color: #4CAF50;
+    background-color: transparent;
     color: #4CAF50;
+    transform: translateX(-3px);
+    box-shadow: none;
+}
+
+.btn-voltar:active {
+    transform: translateX(-1px);
+}
+
+.botoes-nova-venda {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.botoes-nova-venda button {
+    flex: 1;
+    padding: 15px;
+}
+
+.botoes-nova-venda.oculto {
+    display: none;
 }
 
 .botoes-edicao {
     display: none;
     gap: 10px;
-    margin-top: 20px;
+    width: 100%;
 }
 
 .botoes-edicao.ativo {
@@ -503,17 +556,17 @@ button:hover {
 
 .botoes-edicao button {
     flex: 1;
-    padding: 12px;
+    padding: 15px;
 }
 
 .btn-salvar {
-    background-color: #ffc107;
+    background-color: #4CAF50;
     border: none;
-    color: #000;
+    color: white;
 }
 
 .btn-salvar:hover {
-    background-color: #ffca2c;
+    background-color: #45a049;
 }
 
 .btn-cancelar {
@@ -527,7 +580,13 @@ button:hover {
 }
 
 .btn-adicionar {
-    display: block;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+.btn-adicionar:hover {
+    background-color: #45a049;
 }
 
 .btn-adicionar.oculto {
@@ -644,21 +703,59 @@ button:hover {
 }
 
 .titulo-lista-vendas {
-    color: #1a1a1a;
-    font-size: 1em;
-    margin-top: 25px;
+    color: #9e9e9e;
+    font-size: 0.85em;
+    margin: 25px 0 20px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.titulo-lista-vendas::before,
+.titulo-lista-vendas::after {
+    content: "";
+    height: 1px;
+    width: 50px;
+    background: #e0e0e0;
+    display: block;
+}
+
+/* Ajuste responsivo para o título */
+@media (max-width: 600px) {
+    .titulo-lista-vendas {
+        font-size: 0.8em;
+        margin: 20px 0 15px;
+    }
+    
+    .titulo-lista-vendas::before,
+    .titulo-lista-vendas::after {
+        width: 30px;
+    }
 }
 
 /* Media Queries para Responsividade */
 @media (max-width: 600px) {
     body {
         padding: 10px;
-        margin: 10px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    h2 {
+        font-size: 1.4rem;
     }
 
     .form-group input,
     .form-group select {
         max-width: 100%;
+        height: 42px; /* Ligeiramente menor para telas menores */
     }
 
     .bloco-info {
@@ -682,6 +779,7 @@ button:hover {
     button {
         width: 100%;
         margin-bottom: 5px;
+        padding: 10px 16px; /* Ajustado para telas menores */
     }
 
     .bloco-acoes {
@@ -697,17 +795,88 @@ button:hover {
         align-items: flex-start;
     }
 
-    .campos-valor {
-        flex-direction: row; /* Mantém os campos lado a lado mesmo em telas pequenas */
+    .welcome-message h2 {
+        font-size: 1.3rem;
+    }
+    
+    .menu-card {
+        padding: 15px;
+    }
+    
+    .menu-card i {
+        font-size: 1.8rem;
+    }
+    
+    .menu-card h3 {
+        font-size: 1.1rem;
+    }
+    
+    .menu-card p {
+        font-size: 0.85rem;
+    }
+    
+    .fab {
+        width: 50px;
+        height: 50px;
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .fab i {
+        font-size: 20px;
+    }
+    
+    .form-venda {
+        padding: 15px;
+    }
+    
+    .form-title {
+        font-size: 1.1rem;
+    }
+    
+    .venda-item {
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+    
+    .venda-cliente {
+        font-size: 1rem;
     }
 
-    .campos-valor .form-group {
-        flex: 1;
+    /* Ajuste para o botão voltar */
+    .btn-voltar {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        width: 35px;
+        height: 35px;
     }
-
-    .campos-valor input {
-        padding: 8px;
-        font-size: 14px;
+    
+    /* Ajuste para título da página ficar bem posicionado */
+    .header-blocos {
+        margin-top: 40px;
+    }
+    
+    /* Manter venda-header com elementos alinhados horizontalmente */
+    .venda-header {
+        flex-direction: row !important;
+    }
+    
+    .venda-data {
+        text-align: right;
+        white-space: nowrap;
+    }
+    
+    /* Espaço adequado para o FAB */
+    .pagina-vendas,
+    .pagina-blocos {
+        padding-bottom: 100px;
+    }
+    
+    /* Espaçamento melhorado para itens de lista */
+    .venda-item {
+        margin-bottom: 12px;
+        padding: 12px;
     }
 }
 
@@ -715,7 +884,6 @@ button:hover {
 @media (min-width: 601px) and (max-width: 900px) {
     body {
         padding: 15px;
-        margin: 15px;
     }
 
     .form-group input,
@@ -725,6 +893,43 @@ button:hover {
 
     .bloco-info {
         gap: 12px;
+    }
+    
+    .menu-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    #lista-blocos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Media Query para desktop */
+@media (min-width: 901px) {
+    body {
+        padding: 20px;
+    }
+    
+    .menu-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    #lista-blocos {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    
+    .welcome-container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    
+    .welcome-message {
+        flex: 1;
+        margin-right: 20px;
+    }
+    
+    .menu-cards {
+        flex: 1.2;
     }
 }
 
@@ -742,6 +947,39 @@ button:hover {
     button {
         padding: 10px 15px;
         font-size: 13px;
+    }
+    
+    .welcome-message h2 {
+        font-size: 1.1rem;
+    }
+    
+    .welcome-message p {
+        font-size: 0.85rem;
+    }
+    
+    .dashboard-preview {
+        padding: 10px;
+    }
+    
+    .dashboard-preview p {
+        font-size: 0.85rem;
+    }
+    
+    .menu-card {
+        padding: 12px;
+    }
+    
+    .header-blocos h2 {
+        font-size: 1.2rem;
+    }
+    
+    .fab {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .fab i {
+        font-size: 18px;
     }
 }
 
@@ -771,16 +1009,18 @@ button:hover {
         gap: 5px;
     }
 
-    .info-label, .info-value {
+    .info-label {
         font-size: 0.9em;
+    }
+
+    .info-value {
+        font-size: 1em;
     }
 
     .lista-vendas-container {
         max-height: 587px;
-    }    
-}
-
-@media screen and (max-width: 412px) {
+    }
+    
     .venda-detalhes {
         flex-wrap: wrap;
         gap: 8px;
@@ -796,9 +1036,7 @@ button:hover {
         text-align: right;
         font-size: 1.1em;
     }
-}
-
-@media screen and (max-width: 412px) {
+    
     .resumo-header {
         gap: 15px;
     }
@@ -816,8 +1054,1235 @@ button:hover {
     .resumo-valor {
         font-size: 1em;
     }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions button {
+        width: 100%;
+    }
+
+    /* Garantir que venda-header mantenha o layout em linha */
+    .venda-header {
+        flex-direction: row !important;
+        justify-content: space-between;
+    }
+    
+    .venda-data {
+        text-align: right;
+        white-space: nowrap;
+    }
+}
+
+/* Ajustes para telas em landscape no mobile */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    body {
+        margin: 10px auto;
+    }
+    
+    header {
+        margin-bottom: 15px;
+    }
+    
+    .welcome-container {
+        gap: 15px;
+        margin-top: 15px;
+    }
+    
+    .welcome-message {
+        padding: 15px;
+    }
+    
+    .welcome-message h2 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+    
+    .dashboard-preview {
+        margin-top: 10px;
+    }
+    
+    .menu-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    .menu-card {
+        padding: 10px;
+    }
+    
+    .menu-card i {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+    }
+    
+    .menu-card h3 {
+        font-size: 1rem;
+        margin-bottom: 5px;
+    }
+    
+    .menu-card p {
+        font-size: 0.8rem;
+    }
+    
+    footer {
+        margin-top: 20px;
+        padding: 10px 0;
+    }
+    
+    .lista-vendas-container {
+        max-height: 200px;
+    }
+}
+
+/* Ajustes específicos para iPads e tablets */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .menu-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    #lista-blocos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .welcome-container {
+        flex-direction: column;
+    }
+}
+
+/* Ajustes específicos para a página de configuração de blocos */
+@media (max-width: 768px) {
+    .form-group input, 
+    .form-group select {
+        font-size: 15px;
+    }
+    
+    .resumo {
+        padding: 12px;
+        font-size: 0.9em;
+    }
+    
+    .campos-custo-unitario,
+    .campos-custo-total {
+        padding: 12px;
+    }
+    
+    .campo-ajuda {
+        font-size: 0.8em;
+    }
+}
+
+/* Ajustes para telas de alta resolução */
+@media (min-width: 1200px) {
+    body {
+        max-width: 1400px;
+    }
+    
+    .welcome-container {
+        gap: 40px;
+    }
+    
+    #lista-blocos {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Ajustes para dispositivos muito largos mas com pouca altura (TVs) */
+@media (min-width: 1400px) and (max-height: 900px) {
+    body {
+        max-width: 80%;
+        margin: 30px auto;
+    }
+    
+    .welcome-container {
+        flex-direction: row;
+    }
+    
+    .menu-cards {
+        grid-template-columns: repeat(3, 1fr);
+        flex: 2;
+    }
+    
+    .welcome-message {
+        flex: 1;
+    }
 }
 
 #nome {
     text-transform: uppercase;
+}
+
+#nomeLanche {
+    text-transform: uppercase;
+}
+
+/* Estilos para a página inicial (Home) */
+.pagina-home {
+    background-color: #f8f9fa;
+}
+
+.pagina-home header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.pagina-home .subtitulo {
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin-top: -10px;
+}
+
+.welcome-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.welcome-message {
+    background-color: white;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.welcome-message h2 {
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.dashboard-preview {
+    background-color: #f1f8e9;
+    border-left: 4px solid #4CAF50;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 0 4px 4px 0;
+}
+
+.dashboard-preview p {
+    display: flex;
+    align-items: center;
+    color: #558b2f;
+}
+
+.dashboard-preview i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.menu-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.menu-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.menu-card i {
+    font-size: 2rem;
+    color: #4CAF50;
+    margin-bottom: 15px;
+}
+
+.menu-card h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.menu-card p {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.menu-card.disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.menu-card.disabled:hover {
+    transform: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6c757d;
+    padding: 20px 0;
+    border-top: 1px solid #dee2e6;
+}
+
+/* Estilos para mensagem quando não há blocos */
+.mensagem-vazia {
+    text-align: center;
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.mensagem-vazia p {
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+/* Media queries para responsividade */
+@media (max-width: 768px) {
+    .welcome-container {
+        gap: 20px;
+    }
+    
+    .menu-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estilo para o floating action button (FAB) */
+.fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: none;
+}
+
+.fab i {
+    font-size: 24px;
+}
+
+.fab:hover {
+    background-color: #45a049;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.fab:active {
+    transform: translateY(0px);
+}
+
+/* Atualização para o cabeçalho da página de blocos */
+.pagina-blocos .header-blocos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    position: relative;
+}
+
+.pagina-blocos .header-blocos h2 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+/* Ajustes para responsividade do FAB */
+@media (max-width: 768px) {
+    .fab {
+        width: 55px;
+        height: 55px;
+        bottom: 20px;
+        right: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .fab {
+        width: 50px;
+        height: 50px;
+        bottom: 15px;
+        right: 15px;
+    }
+    
+    .fab i {
+        font-size: 22px;
+    }
+}
+
+/* Aprimoramentos para a lista de blocos */
+#lista-blocos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+    padding: 0 5px;
+}
+
+@media (max-width: 680px) {
+    #lista-blocos {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estilos para a página de vendas */
+.pagina-vendas {
+    position: relative;
+    padding-bottom: 80px;
+    padding-top: 45px;
+}
+
+.destaque {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.vendas-container {
+    margin-top: 20px;
+}
+
+.titulo-lista-vendas {
+    /* color: #2c3e50; */
+    font-size: 0.8em;
+    margin-bottom: 15px;
+    /* font-weight: 600; */
+}
+
+.lista-vendas-container {
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+    border: none;
+    padding: 0 5px;
+    margin: 0;
+    border-radius: 8px;
+    background-color: transparent;
+}
+
+/* Formulário de Vendas */
+.form-venda {
+    display: none;
+    margin-top: 20px;
+    position: relative;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.form-venda.mostrar {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.form-title {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Item de venda modernizado */
+.venda-item {
+    background: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.venda-item:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+}
+
+.venda-item.pago {
+    background-color: #f8fdf9;
+    border-left: 4px solid #4CAF50;
+}
+
+.venda-cliente {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.venda-detalhes {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.venda-status {
+    font-size: 0.85em;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.venda-status i {
+    font-size: 14px;
+}
+
+/* Versão específica do FAB para página de vendas */
+.fab-add-venda {
+    z-index: 1000;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+/* Aprimoramentos para os campos de formulário */
+.form-group input,
+.form-group select {
+    border-radius: 8px;
+    border: 1.5px solid #e0e0e0;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+    outline: none;
+}
+
+.checkbox-group {
+    margin: 12px 0;
+    gap: 15px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+    color: #555;
+    cursor: pointer;
+}
+
+.checkbox-group input[type="checkbox"] {
+    accent-color: #4CAF50;
+    width: 16px;
+    height: 16px;
+}
+
+.btn-adicionar {
+    width: 100%;
+    /* margin-top: 10px; */
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* Melhorias adicionais para responsividade */
+
+/* Ajustes para formulários responsivos */
+@media (max-width: 768px) {
+    /* Ajustes para o formulário de venda */
+    .form-venda {
+        margin-bottom: 30px;
+    }
+    
+    /* Melhoria para botões em formulários */
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    /* Aumentar área de toque para inputs em dispositivos móveis */
+    input[type="checkbox"], 
+    input[type="radio"] {
+        width: 20px;
+        height: 20px;
+    }
+    
+    /* Melhorar visualização do resumo em config-bloco */
+    .resumo p {
+        font-size: 0.9em;
+        margin: 8px 0;
+    }
+}
+
+/* Ajustes para melhorar a navegação em dispositivos móveis */
+@media (max-width: 600px) {
+    .pagina-vendas {
+        padding-top: 45px; /* Ajuste para telas menores */
+    }
+
+    .destaque {
+        margin-top: 17px;
+    }
+
+    /* Ajuste para o botão voltar */
+    .btn-voltar {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+    }
+    
+    /* Ajuste para título da página ficar bem posicionado */
+    .header-blocos {
+        margin-top: 40px;
+    }
+    
+    /* Manter venda-header com elementos alinhados horizontalmente */
+    .venda-header {
+        flex-direction: row !important;
+    }
+    
+    .venda-data {
+        text-align: right;
+        white-space: nowrap;
+    }
+    
+    /* Espaço adequado para o FAB */
+    .pagina-vendas,
+    .pagina-blocos {
+        padding-bottom: 100px;
+    }
+    
+    /* Espaçamento melhorado para itens de lista */
+    .venda-item {
+        margin-bottom: 12px;
+        padding: 12px;
+    }
+    
+    /* Ajustes para venda-item em telas pequenas */
+    .venda-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .venda-data {
+        margin-top: 5px;
+        font-size: 0.8em;
+    }
+}
+
+/* Ajustes para a orientação paisagem em smartphones */
+@media (max-height: 450px) and (orientation: landscape) {
+    /* Melhorar visualização em modo paisagem */
+    .destaque {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    /* Reduzir espaçamentos */
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    /* Reorganizar formulários horizontalmente */
+    .form-row {
+        flex-direction: row;
+    }
+    
+    /* Condensar o formulário para caber na altura limitada */
+    .form-title {
+        margin-bottom: 10px;
+    }
+    
+    /* Ajustar lista para ocupar menos espaço vertical */
+    .lista-vendas-container {
+        max-height: 150px;
+    }
+}
+
+/* Ajustes para dispositivos de alta densidade de pixels */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Bordas mais finas para melhor visualização em telas retina */
+    .destaque,
+    .venda-item,
+    .bloco-vendas {
+        border-width: 0.5px;
+    }
+    
+    /* Fontes ligeiramente maiores para melhor legibilidade */
+    body {
+        font-size: 16px;
+    }
+}
+
+/* Melhorias para telas muito grandes (monitores 4K, etc) */
+@media (min-width: 2000px) {
+    body {
+        max-width: 1400px;
+        font-size: 18px;
+    }
+    
+    /* Layout de 4 colunas para telas muito largas */
+    #lista-blocos {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .menu-cards {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    /* Aumentar tamanho do FAB para proporcionalidade */
+    .fab {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .fab i {
+        font-size: 28px;
+    }
+}
+
+/* Ajuste para dispositivos de entrada precisa vs. touch */
+@media (hover: hover) {
+    /* Estilos específicos para dispositivos com mouse */
+    .btn-config,
+    .fab,
+    button {
+        transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+    }
+    
+    .menu-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .venda-item:hover {
+        transform: translateY(-3px);
+    }
+}
+
+@media (hover: none) {
+    /* Estilos para dispositivos touch */
+    button, 
+    .btn-config,
+    .fab {
+        /* Área de toque maior */
+        min-height: 44px;
+    }
+    
+    /* Desabilitar transformações que podem causar problemas em touch */
+    .menu-card:hover,
+    .venda-item:hover,
+    .bloco-vendas:hover {
+        transform: none;
+    }
+    
+    /* Estados ativos mais pronunciados para feedback em toque */
+    button:active,
+    .fab:active,
+    .venda-item:active,
+    .menu-card:active {
+        background-color: rgba(0,0,0,0.05);
+    }
+}
+
+/* Ajustes específicos para dispositivos iOS */
+@supports (-webkit-touch-callout: none) {
+    input,
+    button,
+    select {
+        /* Corrigir problemas de input em iOS */
+        -webkit-appearance: none;
+        border-radius: 8px;
+    }
+    
+    /* Corrigir problema de padding em iOS */
+    body {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+/* Ajustes para a página principal */
+@media (max-width: 480px) {
+    .pagina-home h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    
+    .pagina-home .subtitulo {
+        font-size: 0.95rem;
+        margin-top: -15px;
+        margin-bottom: 25px;
+    }
+    
+    .welcome-message {
+        padding: 20px;
+    }
+    
+    .welcome-message h2 {
+        font-size: 1.3rem;
+    }
+    
+    .menu-card h3 {
+        font-size: 1.05rem;
+    }
+}
+
+/* Estilos para loading spinner */
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    margin: 20px 0;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(76, 175, 80, 0.2);
+    border-radius: 50%;
+    border-top-color: #4CAF50;
+    animation: spin 1s linear infinite;
+    margin-bottom: 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Melhorias para áreas de toque em dispositivos móveis */
+@media (max-width: 600px) {
+    .checkbox-container {
+        padding: 8px 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    .checkbox-text {
+        margin-left: 8px;
+    }
+    
+    /* Melhorar área de toque */
+    input[type="checkbox"] {
+        min-width: 22px;
+        min-height: 22px;
+    }
+    
+    /* Botões mais altos em dispositivos móveis */
+    button, 
+    .btn-voltar,
+    .fab {
+        min-height: 44px;
+    }
+    
+    /* Ajustes para campo de resumo */
+    .resumo {
+        padding: 12px;
+    }
+    
+    .resumo h3 {
+        font-size: 1.1em;
+    }
+    
+    /* Ajuste para campos de custo */
+    .campos-custo {
+        padding: 12px;
+        border-radius: 8px;
+    }
+}
+
+/* Ajuste para mensagens vazias */
+.mensagem-vazia {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 20px;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Melhorias para o dropdown de forma de pagamento */
+#formaPagamentoGroup {
+    max-width: 100%;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    max-height: 0;
+    margin-bottom: 0;
+    opacity: 0;
+}
+
+#formaPagamentoGroup[style*="display: block"] {
+    max-height: 100px;
+    margin-bottom: 15px;
+    opacity: 1;
+}
+
+/* Ajustes para página inicial em dispositivos ultra-wide */
+@media (min-width: 1800px) {
+    .pagina-home {
+        max-width: 1600px;
+        margin: 40px auto;
+    }
+    
+    .welcome-container {
+        gap: 50px;
+    }
+    
+    .welcome-message {
+        flex: 0.7;
+    }
+    
+    .menu-cards {
+        flex: 1.3;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Melhorias para scroll em dispositivos móveis */
+@media (max-width: 768px) {
+    /* Garantir que o scroll seja suave */
+    html, body {
+        scroll-behavior: smooth;
+    }
+    
+    /* Corrigir problema de overflow em dispositivos iOS */
+    body {
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Ajustes para evitar overflow */
+    .bloco-valores {
+        word-break: break-word;
+        hyphens: auto;
+    }
+    
+    /* Garantir que o texto não quebre o layout */
+    .bloco-header h3 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+/* Ajustes para acessibilidade - alto contraste */
+@media (prefers-contrast: more) {
+    body {
+        color: #000;
+        background-color: #fff;
+    }
+    
+    button, .fab {
+        border: 2px solid #000;
+    }
+    
+    .info-label, .resumo-label {
+        color: #000;
+    }
+    
+    .bloco-vendas {
+        border: 1px solid #000;
+    }
+}
+
+/* Ajustes para tema escuro do sistema */
+@media (prefers-color-scheme: dark) {
+    /* Estilos para tema escuro serão implementados em uma versão futura */
+    /* Deixando a estrutura pronta */
+}
+
+/* Estilos específicos para a página de configuração de blocos */
+.pagina-config {
+    padding-top: 45px;
+    padding-bottom: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pagina-config .header-blocos {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.pagina-config .header-blocos h2 {
+    color: #2c3e50;
+    font-size: 1.3em;
+    font-weight: 600;
+    margin: 0;
+}
+
+.pagina-config .destaque {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.campos-custo {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border: 1px solid #e9ecef;
+}
+
+.campos-custo .form-group:last-child {
+    margin-bottom: 0;
+}
+
+.resumo {
+    background-color: #f1f8e9;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 25px 0;
+    border-left: 4px solid #4CAF50;
+}
+
+.resumo h3 {
+    color: #2c3e50;
+    font-size: 1.1em;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.resumo p {
+    margin: 10px 0;
+    color: #2c3e50;
+    font-size: 0.95em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.resumo span {
+    font-weight: 500;
+    color: #1e88e5;
+}
+
+.form-actions {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.form-actions button {
+    flex: 1;
+    padding: 15px;
+}
+
+/* Ajustes responsivos para a página de configuração */
+@media (max-width: 600px) {
+    .pagina-config {
+        padding: 10px;
+        padding-top: 45px;
+    }
+
+    .pagina-config .destaque {
+        padding: 20px;
+    }
+
+    .campos-custo {
+        padding: 15px;
+    }
+
+    .resumo {
+        padding: 15px;
+        margin: 20px 0;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}
+
+/* Estilos para o Modal de Pagamento */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.mostrar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal.mostrar .modal-content {
+    transform: translateY(0);
+}
+
+.modal-content h3 {
+    color: #2c3e50;
+    font-size: 1.3em;
+    margin: 0 0 20px 0;
+    text-align: center;
+}
+
+.opcoes-pagamento {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.opcao-pagamento {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.opcao-pagamento:hover {
+    border-color: #4CAF50;
+    transform: translateY(-2px);
+}
+
+.opcao-pagamento i {
+    font-size: 24px;
+    color: #4CAF50;
+}
+
+.opcao-pagamento span {
+    font-size: 0.9em;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.modal-actions button {
+    min-width: 120px;
+}
+
+/* Ajustes responsivos para o modal */
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 20px;
+    }
+
+    .opcoes-pagamento {
+        gap: 10px;
+    }
+
+    .opcao-pagamento {
+        padding: 15px;
+    }
+
+    .opcao-pagamento i {
+        font-size: 20px;
+    }
+}
+
+#formaPagamentoGroup .opcoes-pagamento {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#formaPagamentoGroup .opcao-pagamento {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+#formaPagamentoGroup .opcao-pagamento:hover {
+    border-color: #4CAF50;
+    transform: translateY(-2px);
+}
+
+#formaPagamentoGroup .opcao-pagamento.ativo {
+    border-color: #4CAF50;
+    background-color: #f1f8f1;
+}
+
+#formaPagamentoGroup .opcao-pagamento i {
+    font-size: 20px;
+    color: #4CAF50;
+}
+
+#formaPagamentoGroup .opcao-pagamento span {
+    font-size: 0.9em;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+@media (max-width: 480px) {
+    #formaPagamentoGroup .opcao-pagamento {
+        padding: 10px;
+    }
+    
+    #formaPagamentoGroup .opcao-pagamento i {
+        font-size: 18px;
+    }
 }

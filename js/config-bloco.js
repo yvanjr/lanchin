@@ -11,7 +11,7 @@ window.onload = function() {
         const blocoAtual = blocos.find(b => b.id === blocoId);
         
         if (blocoAtual) {
-            document.getElementById('nomeLanche').value = blocoAtual.nomeLanche;
+            document.getElementById('nomeLanche').value = blocoAtual.nomeLanche.toUpperCase();
             document.getElementById('tipoCusto').value = blocoAtual.tipoCusto;
             
             if (blocoAtual.tipoCusto === 'unitario') {
@@ -100,7 +100,7 @@ document.getElementById('config-form').addEventListener('submit', function(e) {
     
     const blocoConfig = {
         id: blocoId,
-        nomeLanche: document.getElementById('nomeLanche').value,
+        nomeLanche: document.getElementById('nomeLanche').value.toUpperCase(),
         tipoCusto: tipoCusto,
         valorVenda: parseFloat(document.getElementById('valorVenda').value),
         valorBebida: parseFloat(document.getElementById('valorBebida').value)

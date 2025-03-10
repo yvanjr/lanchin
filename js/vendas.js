@@ -260,7 +260,11 @@ let vendaIndexAtual = null;
 function mostrarModalPagamento(index) {
     vendaIndexAtual = index;
     const modal = document.getElementById('modal-pagamento');
-    modal.classList.add('mostrar');
+    modal.style.display = 'flex';
+    
+    requestAnimationFrame(() => {
+        modal.classList.add('mostrar');
+    });
     
     // Adicionar event listeners para as opções de pagamento
     document.querySelectorAll('.opcao-pagamento').forEach(opcao => {
@@ -274,6 +278,13 @@ function mostrarModalPagamento(index) {
 function fecharModalPagamento() {
     const modal = document.getElementById('modal-pagamento');
     modal.classList.remove('mostrar');
+    
+    // Aguardar a animação terminar antes de esconder o modal
+    modal.addEventListener('transitionend', function handler() {
+        modal.style.display = 'none';
+        modal.removeEventListener('transitionend', handler);
+    });
+    
     vendaIndexAtual = null;
 }
 
@@ -484,14 +495,24 @@ function cancelarEdicao() {
 }
 
 function mostrarFormVenda() {
-    document.getElementById('form-venda').classList.add('mostrar');
-    document.querySelector('.fab-add-venda').style.display = 'none';
-    document.getElementById('nome').focus();
+    document.body.classList.add('form-venda-ativo');
+    requestAnimationFrame(() => {
+        document.getElementById('form-venda').classList.add('mostrar');
+        document.querySelector('.fab-add-venda').style.display = 'none';
+        document.getElementById('nome').focus();
+    });
 }
 
 function ocultarFormVenda() {
-    document.getElementById('form-venda').classList.remove('mostrar');
+    const formVenda = document.getElementById('form-venda');
+    formVenda.classList.remove('mostrar');
     document.querySelector('.fab-add-venda').style.display = 'flex';
+    
+    // Aguardar a animação terminar antes de remover a classe do body
+    formVenda.addEventListener('transitionend', function handler() {
+        document.body.classList.remove('form-venda-ativo');
+        formVenda.removeEventListener('transitionend', handler);
+    });
 }
 
 // Inicialização do formulário e eventos

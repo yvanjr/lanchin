@@ -1483,650 +1483,73 @@ footer {
 
 /* Formulário de Vendas */
 .form-venda {
-    display: none;
+    display: block;
     margin-top: 20px;
-    position: relative;
-    transition: all 0.3s ease;
+    margin-bottom: 0px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 20px 20px 0 0;
+    z-index: 999;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(100%);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+    will-change: transform, opacity;
 }
 
 .form-venda.mostrar {
-    display: block;
     opacity: 1;
     transform: translateY(0);
+    pointer-events: auto;
 }
 
-.form-title {
-    margin-top: 0;
-    color: #2c3e50;
-    font-size: 1.2em;
-    margin-bottom: 20px;
-    font-weight: 600;
-}
-
-/* Item de venda modernizado */
-.venda-item {
-    background: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.venda-item:hover {
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transform: translateY(-3px);
-}
-
-.venda-item.pago {
-    background-color: #f8fdf9;
-    border-left: 4px solid #4CAF50;
-}
-
-.venda-cliente {
-    font-size: 1.1em;
-    font-weight: 600;
-    color: #2c3e50;
-    margin-bottom: 10px;
-}
-
-.venda-detalhes {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 10px;
-}
-
-.venda-status {
-    font-size: 0.85em;
-    color: #6c757d;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.venda-status i {
-    font-size: 14px;
-}
-
-/* Versão específica do FAB para página de vendas */
-.fab-add-venda {
-    z-index: 1000;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-/* Aprimoramentos para os campos de formulário */
-.form-group input,
-.form-group select {
-    border-radius: 8px;
-    border: 1.5px solid #e0e0e0;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-    outline: none;
-}
-
-.checkbox-group {
-    margin: 12px 0;
-    gap: 15px;
-}
-
-.checkbox-group label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9em;
-    color: #555;
-    cursor: pointer;
-}
-
-.checkbox-group input[type="checkbox"] {
-    accent-color: #4CAF50;
-    width: 16px;
-    height: 16px;
-}
-
-.btn-adicionar {
+/* Estilo para o fundo escuro quando o form-venda está ativo */
+body.form-venda-ativo::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    /* margin-top: 10px; */
-    padding: 14px;
-    font-size: 15px;
-    font-weight: 500;
-}
-
-/* Melhorias adicionais para responsividade */
-
-/* Ajustes para formulários responsivos */
-@media (max-width: 768px) {
-    /* Ajustes para o formulário de venda */
-    .form-venda {
-        margin-bottom: 30px;
-    }
-    
-    /* Melhoria para botões em formulários */
-    .form-actions {
-        flex-direction: column;
-    }
-    
-    .form-actions button {
-        width: 100%;
-        margin-bottom: 10px;
-    }
-    
-    /* Aumentar área de toque para inputs em dispositivos móveis */
-    input[type="checkbox"], 
-    input[type="radio"] {
-        width: 20px;
-        height: 20px;
-    }
-    
-    /* Melhorar visualização do resumo em config-bloco */
-    .resumo p {
-        font-size: 0.9em;
-        margin: 8px 0;
-    }
-}
-
-/* Ajustes para melhorar a navegação em dispositivos móveis */
-@media (max-width: 600px) {
-    .pagina-vendas {
-        padding-top: 45px; /* Ajuste para telas menores */
-    }
-
-    .destaque {
-        margin-top: 17px;
-    }
-
-    /* Ajuste para o botão voltar */
-    .btn-voltar {
-        position: fixed;
-        top: 10px;
-        left: 10px;
-    }
-    
-    /* Ajuste para título da página ficar bem posicionado */
-    .header-blocos {
-        margin-top: 40px;
-    }
-    
-    /* Manter venda-header com elementos alinhados horizontalmente */
-    .venda-header {
-        flex-direction: row !important;
-    }
-    
-    .venda-data {
-        text-align: right;
-        white-space: nowrap;
-    }
-    
-    /* Espaço adequado para o FAB */
-    .pagina-vendas,
-    .pagina-blocos {
-        padding-bottom: 100px;
-    }
-    
-    /* Espaçamento melhorado para itens de lista */
-    .venda-item {
-        margin-bottom: 12px;
-        padding: 12px;
-    }
-    
-    /* Ajustes para venda-item em telas pequenas */
-    .venda-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .venda-data {
-        margin-top: 5px;
-        font-size: 0.8em;
-    }
-}
-
-/* Ajustes para a orientação paisagem em smartphones */
-@media (max-height: 450px) and (orientation: landscape) {
-    /* Melhorar visualização em modo paisagem */
-    .destaque {
-        padding: 15px;
-        margin-bottom: 15px;
-    }
-    
-    /* Reduzir espaçamentos */
-    .form-group {
-        margin-bottom: 15px;
-    }
-    
-    /* Reorganizar formulários horizontalmente */
-    .form-row {
-        flex-direction: row;
-    }
-    
-    /* Condensar o formulário para caber na altura limitada */
-    .form-title {
-        margin-bottom: 10px;
-    }
-    
-    /* Ajustar lista para ocupar menos espaço vertical */
-    .lista-vendas-container {
-        max-height: 150px;
-    }
-}
-
-/* Ajustes para dispositivos de alta densidade de pixels */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    /* Bordas mais finas para melhor visualização em telas retina */
-    .destaque,
-    .venda-item,
-    .bloco-vendas {
-        border-width: 0.5px;
-    }
-    
-    /* Fontes ligeiramente maiores para melhor legibilidade */
-    body {
-        font-size: 16px;
-    }
-}
-
-/* Melhorias para telas muito grandes (monitores 4K, etc) */
-@media (min-width: 2000px) {
-    body {
-        max-width: 1400px;
-        font-size: 18px;
-    }
-    
-    /* Layout de 4 colunas para telas muito largas */
-    #lista-blocos {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
-    .menu-cards {
-        grid-template-columns: repeat(4, 1fr);
-    }
-    
-    /* Aumentar tamanho do FAB para proporcionalidade */
-    .fab {
-        width: 70px;
-        height: 70px;
-    }
-    
-    .fab i {
-        font-size: 28px;
-    }
-}
-
-/* Ajuste para dispositivos de entrada precisa vs. touch */
-@media (hover: hover) {
-    /* Estilos específicos para dispositivos com mouse */
-    .btn-config,
-    .fab,
-    button {
-        transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-    }
-    
-    .menu-card:hover {
-        transform: translateY(-5px);
-    }
-    
-    .venda-item:hover {
-        transform: translateY(-3px);
-    }
-}
-
-@media (hover: none) {
-    /* Estilos para dispositivos touch */
-    button, 
-    .btn-config,
-    .fab {
-        /* Área de toque maior */
-        min-height: 44px;
-    }
-    
-    /* Desabilitar transformações que podem causar problemas em touch */
-    .menu-card:hover,
-    .venda-item:hover,
-    .bloco-vendas:hover {
-        transform: none;
-    }
-    
-    /* Estados ativos mais pronunciados para feedback em toque */
-    button:active,
-    .fab:active,
-    .venda-item:active,
-    .menu-card:active {
-        background-color: rgba(0,0,0,0.05);
-    }
-}
-
-/* Ajustes específicos para dispositivos iOS */
-@supports (-webkit-touch-callout: none) {
-    input,
-    button,
-    select {
-        /* Corrigir problemas de input em iOS */
-        -webkit-appearance: none;
-        border-radius: 8px;
-    }
-    
-    /* Corrigir problema de padding em iOS */
-    body {
-        padding-bottom: env(safe-area-inset-bottom);
-    }
-}
-
-/* Ajustes para a página principal */
-@media (max-width: 480px) {
-    .pagina-home h1 {
-        font-size: 1.8rem;
-        margin-bottom: 20px;
-    }
-    
-    .pagina-home .subtitulo {
-        font-size: 0.95rem;
-        margin-top: -15px;
-        margin-bottom: 25px;
-    }
-    
-    .welcome-message {
-        padding: 20px;
-    }
-    
-    .welcome-message h2 {
-        font-size: 1.3rem;
-    }
-    
-    .menu-card h3 {
-        font-size: 1.05rem;
-    }
-}
-
-/* Estilos para loading spinner */
-.loading-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    margin: 20px 0;
-}
-
-.loading-spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid rgba(76, 175, 80, 0.2);
-    border-radius: 50%;
-    border-top-color: #4CAF50;
-    animation: spin 1s linear infinite;
-    margin-bottom: 15px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Melhorias para áreas de toque em dispositivos móveis */
-@media (max-width: 600px) {
-    .checkbox-container {
-        padding: 8px 0;
-        display: flex;
-        align-items: center;
-    }
-    
-    .checkbox-text {
-        margin-left: 8px;
-    }
-    
-    /* Melhorar área de toque */
-    input[type="checkbox"] {
-        min-width: 22px;
-        min-height: 22px;
-    }
-    
-    /* Botões mais altos em dispositivos móveis */
-    button, 
-    .btn-voltar,
-    .fab {
-        min-height: 44px;
-    }
-    
-    /* Ajustes para campo de resumo */
-    .resumo {
-        padding: 12px;
-    }
-    
-    .resumo h3 {
-        font-size: 1.1em;
-    }
-    
-    /* Ajuste para campos de custo */
-    .campos-custo {
-        padding: 12px;
-        border-radius: 8px;
-    }
-}
-
-/* Ajuste para mensagens vazias */
-.mensagem-vazia {
-    text-align: center;
-    padding: 30px 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    margin-top: 20px;
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Melhorias para o dropdown de forma de pagamento */
-#formaPagamentoGroup {
-    max-width: 100%;
-    transition: all 0.3s ease;
-    overflow: hidden;
-    max-height: 0;
-    margin-bottom: 0;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
     opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: auto;
 }
 
-#formaPagamentoGroup[style*="display: block"] {
-    max-height: 100px;
-    margin-bottom: 15px;
+body.form-venda-ativo::before {
     opacity: 1;
 }
 
-/* Ajustes para página inicial em dispositivos ultra-wide */
-@media (min-width: 1800px) {
-    .pagina-home {
-        max-width: 1600px;
-        margin: 40px auto;
-    }
-    
-    .welcome-container {
-        gap: 50px;
-    }
-    
-    .welcome-message {
-        flex: 0.7;
-    }
-    
-    .menu-cards {
-        flex: 1.3;
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-/* Melhorias para scroll em dispositivos móveis */
-@media (max-width: 768px) {
-    /* Garantir que o scroll seja suave */
-    html, body {
-        scroll-behavior: smooth;
-    }
-    
-    /* Corrigir problema de overflow em dispositivos iOS */
-    body {
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    /* Ajustes para evitar overflow */
-    .bloco-valores {
-        word-break: break-word;
-        hyphens: auto;
-    }
-    
-    /* Garantir que o texto não quebre o layout */
-    .bloco-header h3 {
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-}
-
-/* Ajustes para acessibilidade - alto contraste */
-@media (prefers-contrast: more) {
-    body {
-        color: #000;
-        background-color: #fff;
-    }
-    
-    button, .fab {
-        border: 2px solid #000;
-    }
-    
-    .info-label, .resumo-label {
-        color: #000;
-    }
-    
-    .bloco-vendas {
-        border: 1px solid #000;
-    }
-}
-
-/* Ajustes para tema escuro do sistema */
-@media (prefers-color-scheme: dark) {
-    /* Estilos para tema escuro serão implementados em uma versão futura */
-    /* Deixando a estrutura pronta */
-}
-
-/* Estilos específicos para a página de configuração de blocos */
-.pagina-config {
-    padding-top: 45px;
-    padding-bottom: 30px;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.pagina-config .header-blocos {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.pagina-config .header-blocos h2 {
-    color: #2c3e50;
-    font-size: 1.3em;
-    font-weight: 600;
-    margin: 0;
-}
-
-.pagina-config .destaque {
-    background-color: #fff;
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-}
-
-.campos-custo {
-    background-color: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    margin: 15px 0;
-    border: 1px solid #e9ecef;
-}
-
-.campos-custo .form-group:last-child {
-    margin-bottom: 0;
-}
-
-.resumo {
-    background-color: #f1f8e9;
-    padding: 20px;
-    border-radius: 8px;
-    margin: 25px 0;
-    border-left: 4px solid #4CAF50;
-}
-
-.resumo h3 {
-    color: #2c3e50;
-    font-size: 1.1em;
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-
-.resumo p {
-    margin: 10px 0;
-    color: #2c3e50;
-    font-size: 0.95em;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.resumo span {
-    font-weight: 500;
-    color: #1e88e5;
-}
-
-.form-actions {
-    margin-top: 25px;
-    display: flex;
-    gap: 15px;
-}
-
-.form-actions button {
-    flex: 1;
-    padding: 15px;
-}
-
-/* Ajustes responsivos para a página de configuração */
+/* Ajustes responsivos para o formulário de venda */
 @media (max-width: 600px) {
-    .pagina-config {
-        padding: 10px;
-        padding-top: 45px;
+    .form-venda {
+        padding: 20px 15px;
+        padding-bottom: calc(15px + env(safe-area-inset-bottom)); /* Adiciona padding extra para iPhones com notch */
     }
+    
+    .form-venda .form-title {
+        font-size: 1.1em;
+        margin-bottom: 15px;
+    }
+}
 
-    .pagina-config .destaque {
-        padding: 20px;
-    }
-
-    .campos-custo {
-        padding: 15px;
-    }
-
-    .resumo {
-        padding: 15px;
-        margin: 20px 0;
-    }
-
-    .form-actions {
-        flex-direction: column;
-    }
-
-    .form-actions button {
-        width: 100%;
-    }
+/* Adicionar indicador de deslize para fechar o modal em dispositivos touch */
+.form-venda::before {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 5px;
+    background-color: #e0e0e0;
+    border-radius: 2.5px;
+    margin: -5px auto 15px;
 }
 
 /* Estilos para o Modal de Pagamento */
@@ -2140,29 +1563,42 @@ footer {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
 }
 
 .modal.mostrar {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
     opacity: 1;
+    pointer-events: auto;
 }
 
 .modal-content {
     background-color: #fff;
     padding: 25px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
-    transform: translateY(20px);
-    transition: transform 0.3s ease;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-width: 600px;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    will-change: transform;
 }
 
 .modal.mostrar .modal-content {
     transform: translateY(0);
+}
+
+.modal-content::before {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 5px;
+    background-color: #e0e0e0;
+    border-radius: 2.5px;
+    margin: -5px auto 15px;
 }
 
 .modal-content h3 {

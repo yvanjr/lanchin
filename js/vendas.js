@@ -4,27 +4,46 @@ window.onload = function() {
     
     // Event listeners
     document.getElementById('comBebida').addEventListener('change', atualizarValor);
-    document.getElementById('quantidade').addEventListener('input', atualizarValor);
     document.getElementById('pagamentoImediato').addEventListener('change', toggleFormaPagamento);
     
-    // document.getElementById('nome').focus();
+    // Event listeners para os botões de quantidade
+    document.getElementById('btn-decrease').addEventListener('click', function() {
+        updateQuantity(-1);
+    });
+    document.getElementById('btn-increase').addEventListener('click', function() {
+        updateQuantity(1);
+    });
 
     atualizarListaVendas();
     atualizarResumo();
 };
 
-    // Selecionar conteúdo ao focar
-    document.getElementById('quantidade').addEventListener('focus', function() {
-        this.select();
-    });
+// Função para atualizar a quantidade
+function updateQuantity(change) {
+    const quantityInput = document.getElementById('quantidade');
+    const quantityDisplay = document.getElementById('quantity-display');
     
-    document.getElementById('valor').addEventListener('focus', function() {
-        this.select();
-    });
+    let quantity = parseInt(quantityInput.value) || 1;
+    quantity = Math.max(1, quantity + change); // Não permitir menos que 1
+    
+    quantityInput.value = quantity;
+    quantityDisplay.textContent = quantity;
+    
+    atualizarValor();
+}
 
-    document.getElementById('nome').addEventListener('focus', function() {
-        this.select();
-    });    
+// Selecionar conteúdo ao focar
+document.getElementById('quantidade').addEventListener('focus', function() {
+    this.select();
+});
+
+document.getElementById('valor').addEventListener('focus', function() {
+    this.select();
+});
+
+document.getElementById('nome').addEventListener('focus', function() {
+    this.select();
+});    
 
 function carregarInfoBloco() {
     const blocoId = localStorage.getItem('blocoAtual');
@@ -48,9 +67,11 @@ function carregarInfoBloco() {
 function toggleFormaPagamento() {
     const pagamentoImediato = document.getElementById('pagamentoImediato').checked;
     const formaPagamentoGroup = document.getElementById('formaPagamentoGroup');
+    const formVenda = document.getElementById('form-venda');
     
     if (pagamentoImediato) {
         formaPagamentoGroup.style.display = 'block';
+        formVenda.classList.add('com-pagamento');
         // Força um reflow para a transição funcionar
         formaPagamentoGroup.offsetHeight;
         
@@ -70,6 +91,7 @@ function toggleFormaPagamento() {
         if (primeiroBotao) primeiroBotao.classList.add('ativo');
     } else {
         formaPagamentoGroup.style.display = 'none';
+        formVenda.classList.remove('com-pagamento');
         // Remove a classe ativa de todos os botões
         document.querySelectorAll('#formaPagamentoGroup .opcao-pagamento').forEach(btn => 
             btn.classList.remove('ativo'));
@@ -87,33 +109,39 @@ function atualizarValor() {
         const valorBase = blocoAtual.valorVenda * quantidade;
         const valorTotal = comBebida ? valorBase + (blocoAtual.valorBebida * quantidade) : valorBase;
         
+        // Atualizar o valor no input oculto
         document.getElementById('valor').value = valorTotal.toFixed(2);
+        
+        // Atualizar o texto de exibição do valor no botão
+        const valorDisplay = document.getElementById('valor-display');
+        valorDisplay.textContent = `R$ ${valorTotal.toFixed(2).replace('.', ',')}`;
     }
 }
 
 function adicionarVenda() {
     const nome = document.getElementById('nome').value;
     const quantidade = parseInt(document.getElementById('quantidade').value);
-    const valorUnitario = parseFloat(document.getElementById('valor').value) / quantidade;
+    const valorTotal = parseFloat(document.getElementById('valor').value);
+    const valorUnitario = valorTotal / quantidade;
     const comBebida = document.getElementById('comBebida').checked;
     const pagamentoImediato = document.getElementById('pagamentoImediato').checked;
     const formaPagamento = pagamentoImediato ? 
         document.querySelector('#formaPagamentoGroup .opcao-pagamento.ativo')?.getAttribute('data-forma') : null;
 
-    if (!nome || !quantidade || !valorUnitario) {
+    if (!nome || !quantidade || isNaN(valorTotal) || valorTotal <= 0) {
         alert('Por favor, preencha todos os campos!');
-        return;
+        return false;
     }
 
     if (pagamentoImediato && !formaPagamento) {
         alert('Por favor, selecione uma forma de pagamento!');
-        return;
+        return false;
     }
 
     const blocoId = localStorage.getItem('blocoAtual');
     if (!blocoId) {
         alert('Nenhum bloco selecionado!');
-        return;
+        return false;
     }
 
     const blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
@@ -121,7 +149,7 @@ function adicionarVenda() {
     
     if (blocoIndex === -1) {
         alert('Bloco não encontrado!');
-        return;
+        return false;
     }
 
     const venda = {
@@ -140,17 +168,18 @@ function adicionarVenda() {
     // Limpar campos
     document.getElementById('nome').value = '';
     document.getElementById('quantidade').value = '1';
+    document.getElementById('quantity-display').textContent = '1';
     document.getElementById('valor').value = '';
+    document.getElementById('valor-display').textContent = 'R$ 0,00';
     document.getElementById('comBebida').checked = true;
     document.getElementById('pagamentoImediato').checked = false;
     document.getElementById('formaPagamentoGroup').style.display = 'none';
 
     carregarInfoBloco();
-
-    // document.getElementById('nome').focus();
-
     atualizarListaVendas();
     atualizarResumo();
+    
+    return true;
 }
 
 function formatarDataHora(timestamp) {
@@ -393,7 +422,13 @@ function editarVenda(index) {
     // Preencher os campos com os dados da venda
     document.getElementById('nome').value = venda.nome;
     document.getElementById('quantidade').value = venda.quantidade;
-    document.getElementById('valor').value = (venda.valor * venda.quantidade).toFixed(2);
+    document.getElementById('quantity-display').textContent = venda.quantidade;
+    
+    // Calcular e preencher o valor total
+    const valorTotal = (venda.valor * venda.quantidade).toFixed(2);
+    document.getElementById('valor').value = valorTotal;
+    document.getElementById('valor-display').textContent = `R$ ${valorTotal.replace('.', ',')}`;
+    
     document.getElementById('comBebida').checked = venda.comBebida;
     document.getElementById('pagamentoImediato').checked = venda.pago;
     
@@ -414,11 +449,23 @@ function editarVenda(index) {
         group.classList.add('modo-edicao');
     });
 
-    // Mostrar botões de edição e ocultar botões de nova venda
-    document.querySelector('.botoes-edicao').classList.add('ativo');
-    document.querySelector('.botoes-nova-venda').style.display = 'none';
+    // Modificar o botão de adicionar para salvar
+    const btnAdicionar = document.querySelector('.btn-adicionar-com-valor');
+    btnAdicionar.querySelector('.fixed-text').textContent = 'Salvar';
+    
+    // Mudar o onclick do botão para salvar
+    btnAdicionar.onclick = function() {
+        salvarEdicao();
+        return true;
+    };
+    
+    // Ajustar a função do botão X para cancelar edição
+    document.querySelector('.btn-fechar').onclick = function() {
+        cancelarEdicao();
+    };
 
-    // Mostrar o formulário
+    // Mostrar o formulário e adicionar o overlay escuro
+    document.body.classList.add('form-venda-ativo');
     document.getElementById('form-venda').classList.add('mostrar');
     document.querySelector('.fab-add-venda').style.display = 'none';
 
@@ -427,12 +474,6 @@ function editarVenda(index) {
         op.classList.remove('mostrar');
         op.closest('.venda-item').classList.remove('menu-ativo');
     });
-
-    // Rolar até o topo do formulário
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    atualizarListaVendas();
-    atualizarResumo();
 }
 
 function salvarEdicao() {
@@ -443,11 +484,14 @@ function salvarEdicao() {
     const blocoIndex = blocos.findIndex(b => b.id === blocoId);
     const formaPagamento = document.getElementById('pagamentoImediato').checked ? 
         document.querySelector('#formaPagamentoGroup .opcao-pagamento.ativo')?.getAttribute('data-forma') : null;
-        
+    
+    const quantidade = parseInt(document.getElementById('quantidade').value);
+    const valorTotal = parseFloat(document.getElementById('valor').value);
+    
     const venda = {
         nome: document.getElementById('nome').value,
-        quantidade: parseInt(document.getElementById('quantidade').value),
-        valor: parseFloat(document.getElementById('valor').value) / parseInt(document.getElementById('quantidade').value),
+        quantidade: quantidade,
+        valor: valorTotal / quantidade,
         comBebida: document.getElementById('comBebida').checked,
         pago: document.getElementById('pagamentoImediato').checked,
         timestamp: blocos[blocoIndex].vendas[vendaEmEdicao].timestamp,
@@ -457,41 +501,59 @@ function salvarEdicao() {
     blocos[blocoIndex].vendas[vendaEmEdicao] = venda;
     localStorage.setItem('blocos', JSON.stringify(blocos));
 
-    cancelarEdicao();
+    // Restaurar o estado normal e fechar o formulário
+    vendaEmEdicao = null;
+    resetarFormulario();
+    ocultarFormVenda();
     atualizarListaVendas();
     atualizarResumo();
 }
 
 function cancelarEdicao() {
     vendaEmEdicao = null;
+    resetarFormulario();
+    ocultarFormVenda();
+    atualizarListaVendas();
+    atualizarResumo();
+}
 
+function resetarFormulario() {
     // Restaurar o título original do formulário
     document.querySelector('.form-title').textContent = 'Nova Venda';
 
     // Limpar campos
     document.getElementById('nome').value = '';
     document.getElementById('quantidade').value = '1';
+    document.getElementById('quantity-display').textContent = '1';
     document.getElementById('valor').value = '';
+    document.getElementById('valor-display').textContent = 'R$ 0,00';
     document.getElementById('comBebida').checked = true;
     document.getElementById('pagamentoImediato').checked = false;
     document.getElementById('formaPagamentoGroup').style.display = 'none';
+    document.getElementById('form-venda').classList.remove('com-pagamento');
 
     // Desativar modo de edição
     document.querySelectorAll('.form-group').forEach(group => {
         group.classList.remove('modo-edicao');
     });
 
-    // Ocultar botões de edição e mostrar botões de nova venda
-    document.querySelector('.botoes-edicao').classList.remove('ativo');
-    document.querySelector('.botoes-nova-venda').style.display = 'flex';
-
-    // Ocultar o formulário
-    document.getElementById('form-venda').classList.remove('mostrar');
-    document.querySelector('.fab-add-venda').style.display = 'flex';
-
+    // Restaurar o botão adicionar
+    const btnAdicionar = document.querySelector('.btn-adicionar-com-valor');
+    btnAdicionar.querySelector('.fixed-text').textContent = 'Adicionar';
+    
+    // Restaurar os event listeners originais
+    btnAdicionar.onclick = function() {
+        const result = adicionarVenda();
+        if (result !== false) {
+            ocultarFormVenda();
+        }
+        return result;
+    };
+    
+    // Restaurar a função do botão X
+    document.querySelector('.btn-fechar').onclick = ocultarFormVenda;
+    
     carregarInfoBloco();
-    atualizarListaVendas();
-    atualizarResumo();
 }
 
 function mostrarFormVenda() {
@@ -500,6 +562,9 @@ function mostrarFormVenda() {
         document.getElementById('form-venda').classList.add('mostrar');
         document.querySelector('.fab-add-venda').style.display = 'none';
         document.getElementById('nome').focus();
+        
+        // Garantir que o valor seja atualizado ao abrir o formulário
+        atualizarValor();
     });
 }
 
@@ -518,6 +583,19 @@ function ocultarFormVenda() {
 // Inicialização do formulário e eventos
 document.addEventListener('DOMContentLoaded', function() {
     ocultarFormVenda();
+    
+    // Define a função padrão para o botão X
+    document.querySelector('.btn-fechar').onclick = ocultarFormVenda;
+    
+    // Configurar evento de adicionar venda
+    const btnAdicionar = document.querySelector('.btn-adicionar-com-valor');
+    btnAdicionar.onclick = function() {
+        const result = adicionarVenda();
+        if (result !== false) {
+            ocultarFormVenda();
+        }
+        return result;
+    };
     
     // Verificar se há vendas e mostrar mensagem caso não haja
     const verificarVendas = function() {
@@ -564,17 +642,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Ocultar formulário quando a venda for adicionada com sucesso
-    const btnAdicionar = document.querySelector('.btn-adicionar');
-    const originalAddHandler = btnAdicionar.onclick;
-    btnAdicionar.onclick = function() {
-        const result = adicionarVenda();
-        if (result !== false) {
-            ocultarFormVenda();
-        }
-        return result;
-    };
-
     // Fechar modal ao clicar fora
     document.getElementById('modal-pagamento').addEventListener('click', function(event) {
         if (event.target === this) {

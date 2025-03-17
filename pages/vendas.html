@@ -118,6 +118,9 @@
     <!-- Modal de Forma de Pagamento -->
     <div id="modal-pagamento" class="modal">
         <div class="modal-content">
+            <button class="btn-fechar" onclick="fecharModalPagamento()" title="Fechar">
+                <i class="fas fa-times"></i>
+            </button>
             <h3>Forma de Pagamento</h3>
             <div class="opcoes-pagamento">
                 <button class="opcao-pagamento" data-forma="dinheiro">
@@ -129,9 +132,30 @@
                     <span>PIX</span>
                 </button>
             </div>
-            <div class="modal-actions">
-                <button class="btn-cancelar" onclick="fecharModalPagamento()">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div id="modal-exclusao" class="modal">
+        <div class="modal-content">
+            <button class="btn-fechar" onclick="fecharModalExclusao()" title="Fechar">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3>Confirmar Exclusão</h3>
+            <p class="modal-mensagem">Tem certeza que deseja excluir esta venda?</p>
+            <div class="modal-acoes-confirmacao">
+                <button class="btn-confirmar-exclusao" onclick="executarExclusao()">Excluir</button>
             </div>
+        </div>
+    </div>
+    
+    <!-- Componente Toast para mensagens -->
+    <div id="toast-container" class="toast-container">
+        <div id="toast-message" class="toast-message">
+            <div class="toast-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="toast-text"></div>
         </div>
     </div>
 </body>

@@ -325,13 +325,22 @@ button:active {
     margin-bottom: 5px;
 }
 
-.destaque {
+.pagina-vendas .destaque:first-of-type {
     background-color: #fff;
     padding: 15px;
     border-radius: 8px;
+    margin-top: 10px;
     margin-bottom: 20px;
-    position: relative;
+    position: fixed;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    max-width: 1200px;
+    width: calc(100% - 20px);    
+    left: 0;
+    right: 0;    
+    top: 55px;
+    margin: 0 auto;
+    z-index: 50;    
 }
 
 .resumo {
@@ -702,7 +711,7 @@ button:active {
     text-align: center;
 }
 
-.titulo-lista-vendas {
+.pagina-vendas .titulo-lista-vendas:first-of-type {
     color: #9e9e9e;
     font-size: 0.85em;
     margin: 25px 0 20px;
@@ -714,6 +723,11 @@ button:active {
     font-weight: 400;
     text-transform: uppercase;
     letter-spacing: 1px;
+
+    position: fixed;
+    width: calc(100% - 20px);    
+    top: 220px;
+    z-index: 40;
 }
 
 .titulo-lista-vendas::before,
@@ -1427,6 +1441,11 @@ footer {
     .fab i {
         font-size: 22px;
     }
+
+    .resumo-item {
+        flex: 1;
+        text-align: center;
+    }
 }
 
 /* Aprimoramentos para a lista de blocos */
@@ -1441,6 +1460,11 @@ footer {
 @media (max-width: 680px) {
     #lista-blocos {
         grid-template-columns: 1fr;
+    }
+
+    .resumo-item {
+        flex: 1;
+        text-align: center;
     }
 }
 
@@ -1471,14 +1495,22 @@ footer {
     /* font-weight: 600; */
 }
 
-.lista-vendas-container {
-    max-height: calc(100vh - 250px);
+.pagina-vendas .lista-vendas-container:first-of-type {
+    max-height: calc(100vh - 295px);
     overflow-y: auto;
     border: none;
     padding: 0 5px;
-    margin: 0;
+    /* margin: 0; */
     border-radius: 8px;
     background-color: transparent;
+
+    position: fixed;
+    top: 280px;    
+    margin: 0 auto;
+    max-width: 1200px;
+    width: calc(100% - 20px);
+    left: 0;
+    right: 0;
 }
 
 /* Formulário de Vendas */
@@ -1518,7 +1550,7 @@ footer {
 /* Estilo para o fundo escuro quando o form-venda está ativo */
 body.form-venda-ativo::before {
     content: '';
-    position: fixed;
+        position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -1547,9 +1579,9 @@ body.form-venda-ativo::before {
     }
     
     .form-venda .form-title {
-        font-size: 1.1em;
-        margin-bottom: 15px;
-    }
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
 }
 
 /* Adicionar indicador de deslize para fechar o modal em dispositivos touch */
@@ -1576,17 +1608,18 @@ body.form-venda-ativo::before {
     opacity: 0;
     transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
+    align-items: flex-end;
+    justify-content: center;
 }
 
 .modal.mostrar {
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
     opacity: 1;
     pointer-events: auto;
 }
 
 .modal-content {
+    position: relative;
     background-color: #fff;
     padding: 25px;
     border-radius: 20px 20px 0 0;
@@ -1617,6 +1650,7 @@ body.form-venda-ativo::before {
     font-size: 1.3em;
     margin: 0 0 20px 0;
     text-align: center;
+    padding-right: 30px; /* Espaço para o botão fechar */
 }
 
 .opcoes-pagamento {
@@ -1650,7 +1684,7 @@ body.form-venda-ativo::before {
 }
 
 .opcao-pagamento span {
-    font-size: 0.9em;
+        font-size: 0.9em;
     color: #2c3e50;
     font-weight: 500;
 }
@@ -1692,7 +1726,7 @@ body.form-venda-ativo::before {
 
 #formaPagamentoGroup .opcao-pagamento {
     display: flex;
-    flex-direction: column;
+        flex-direction: column;
     align-items: center;
     gap: 8px;
     padding: 12px;
@@ -1941,7 +1975,12 @@ body.form-venda-ativo::before {
     
     .controles-principais {
         gap: 12px;
-    }
+}
+
+    .resumo-item {
+        flex: 1;
+    text-align: center;
+    }    
 }
 
 /* Para desktops (acima de 768px) */
@@ -1952,5 +1991,233 @@ body.form-venda-ativo::before {
     
     .btn-adicionar-com-valor {
         max-width: 300px;
+    }
+}
+
+/* Remover outline azul em dispositivos móveis e touch */
+button, 
+input,
+select,
+.btn-quantity,
+.btn-adicionar-com-valor,
+.btn-fechar,
+.fab,
+.opcao-pagamento,
+.venda-item,
+.menu-card,
+.bloco-vendas,
+.cliente,
+.form-group,
+.checkbox-container,
+#lista-vendas > div,
+.venda-conteudo,
+.venda-cliente,
+.venda-detalhes,
+a,
+.menu-card a,
+.menu-cards > *,
+#lista-blocos > * {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+}
+
+/* Permitir seleção de texto apenas onde é necessário */
+input, 
+textarea, 
+.venda-cliente {
+    -webkit-user-select: text !important;
+    user-select: text !important;
+}
+
+/* Estilos de foco alternativos para acessibilidade */
+button:focus,
+input:focus,
+.btn-quantity:focus,
+.btn-adicionar-com-valor:focus {
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+/* Preservar efeitos de hover/active em dispositivos touch */
+@media (hover: none) {
+    .btn-quantity:active,
+    .btn-adicionar-com-valor:active,
+    .btn-fechar:active {
+        transform: scale(0.95);
+    }
+    
+    .btn-adicionar-com-valor:active {
+        background-color: #45a049;
+    }
+}
+
+/* Adequar o botão fechar no modal de pagamento */
+.modal-content .btn-fechar {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 20px;
+    }
+
+    .opcoes-pagamento {
+        gap: 10px;
+    }
+
+    .opcao-pagamento {
+        padding: 15px;
+    }
+
+    .opcao-pagamento i {
+        font-size: 20px;
+    }
+}
+
+/* Estilos para o modal de confirmação */
+.modal-mensagem {
+    text-align: center;
+    font-size: 16px;
+    color: #2c3e50;
+    margin-bottom: 25px;
+}
+
+.modal-acoes-confirmacao {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-cancelar {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    color: #6c757d;
+    min-width: 120px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-cancelar:hover {
+    background-color: #e9ecef;
+}
+
+.btn-confirmar-exclusao {
+    background-color: #dc3545;
+    color: white;
+    min-width: 140px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.btn-confirmar-exclusao:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+.btn-confirmar-exclusao:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+    .modal-acoes-confirmacao {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .btn-confirmar-exclusao {
+        width: 80%;
+        padding: 12px;
+        font-size: 15px;
+    }
+    
+    .modal-mensagem {
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+}
+
+/* Estilos para o Toast */
+.toast-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2000;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.toast-container.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.toast-message {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 16px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 280px;
+    max-width: 80vw;
+    pointer-events: auto;
+}
+
+.toast-icon {
+    margin-right: 12px;
+    font-size: 20px;
+    color: #4CAF50;
+    flex-shrink: 0;
+}
+
+.toast-icon.success i {
+    color: #4CAF50;
+}
+
+.toast-icon.error i {
+    color: #dc3545;
+}
+
+.toast-icon.info i {
+    color: #17a2b8;
+}
+
+.toast-icon.warning i {
+    color: #ffc107;
+}
+
+.toast-text {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+@media (max-width: 480px) {
+    .toast-message {
+        min-width: 250px;
+        padding: 12px 16px;
+    }
+    
+    .toast-icon {
+        font-size: 18px;
+    }
+    
+    .toast-text {
+        font-size: 14px;
     }
 }

@@ -118,6 +118,35 @@ function atualizarValor() {
     }
 }
 
+// Função para mostrar toast
+function mostrarToast(mensagem, tipo = 'success', duracao = 3000) {
+    const toastContainer = document.getElementById('toast-container');
+    const toastText = document.querySelector('.toast-text');
+    const toastIcon = document.querySelector('.toast-icon');
+    
+    // Definir o ícone com base no tipo
+    const icones = {
+        success: 'fa-check-circle',
+        error: 'fa-times-circle',
+        info: 'fa-info-circle',
+        warning: 'fa-exclamation-circle'
+    };
+    
+    toastIcon.innerHTML = `<i class="fas ${icones[tipo]}"></i>`;
+    toastIcon.className = 'toast-icon ' + tipo;
+    
+    // Definir o texto
+    toastText.textContent = mensagem;
+    
+    // Mostrar o toast
+    toastContainer.classList.add('show');
+    
+    // Esconder o toast após a duração definida
+    setTimeout(() => {
+        toastContainer.classList.remove('show');
+    }, duracao);
+}
+
 function adicionarVenda() {
     const nome = document.getElementById('nome').value;
     const quantidade = parseInt(document.getElementById('quantidade').value);
@@ -178,6 +207,9 @@ function adicionarVenda() {
     carregarInfoBloco();
     atualizarListaVendas();
     atualizarResumo();
+    
+    // Mostrar toast de confirmação
+    mostrarToast('Venda adicionada com sucesso!', 'success');
     
     return true;
 }
@@ -268,20 +300,69 @@ function atualizarListaVendas() {
     atualizarTotais();
 }
 
+// Variável para armazenar o índice da venda a ser excluída
+let vendaParaExcluir = null;
+
 function confirmarExclusao(index) {
     event.stopPropagation();
-    if (confirm('Tem certeza que deseja excluir esta venda?')) {
-        const blocoId = localStorage.getItem('blocoAtual');
-        const blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
-        const blocoIndex = blocos.findIndex(b => b.id === blocoId);
+    vendaParaExcluir = index;
+    
+    // Mostrar o modal de confirmação
+    const modal = document.getElementById('modal-exclusao');
+    modal.style.display = 'flex';
+    
+    requestAnimationFrame(() => {
+        modal.classList.add('mostrar');
+    });
+    
+    // Fechar o menu de opções da venda
+    document.querySelectorAll('.venda-opcoes').forEach(op => {
+        op.classList.remove('mostrar');
+        op.closest('.venda-item').classList.remove('menu-ativo');
+    });
+}
+
+function fecharModalExclusao() {
+    const modal = document.getElementById('modal-exclusao');
+    const modalContent = modal.querySelector('.modal-content');
+    
+    // Primeiro, animar o conteúdo do modal descendo
+    modalContent.style.transform = 'translateY(100%)';
+    
+    // Depois, reduzir a opacidade do backdrop
+    setTimeout(() => {
+        modal.classList.remove('mostrar');
         
-        if (blocoIndex !== -1) {
-            blocos[blocoIndex].vendas.splice(index, 1);
-            localStorage.setItem('blocos', JSON.stringify(blocos));
-            atualizarListaVendas();
-            atualizarResumo();
-        }
+        // Aguardar a animação terminar antes de esconder o modal
+        modal.addEventListener('transitionend', function handler() {
+            modal.style.display = 'none';
+            // Resetar o transform para o próximo uso
+            modalContent.style.transform = '';
+            modal.removeEventListener('transitionend', handler);
+        }, { once: true });
+    }, 50);
+    
+    vendaParaExcluir = null;
+}
+
+function executarExclusao() {
+    if (vendaParaExcluir === null) return;
+    
+    const blocoId = localStorage.getItem('blocoAtual');
+    const blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
+    const blocoIndex = blocos.findIndex(b => b.id === blocoId);
+    
+    if (blocoIndex !== -1) {
+        blocos[blocoIndex].vendas.splice(vendaParaExcluir, 1);
+        localStorage.setItem('blocos', JSON.stringify(blocos));
+        atualizarListaVendas();
+        atualizarResumo();
+        
+        // Mostrar toast de confirmação
+        mostrarToast('Venda excluída com sucesso!', 'info');
     }
+    
+    fecharModalExclusao();
 }
 
 let vendaIndexAtual = null;
@@ -306,13 +387,23 @@ function mostrarModalPagamento(index) {
 
 function fecharModalPagamento() {
     const modal = document.getElementById('modal-pagamento');
-    modal.classList.remove('mostrar');
+    const modalContent = modal.querySelector('.modal-content');
     
-    // Aguardar a animação terminar antes de esconder o modal
-    modal.addEventListener('transitionend', function handler() {
-        modal.style.display = 'none';
-        modal.removeEventListener('transitionend', handler);
-    });
+    // Primeiro, animar o conteúdo do modal descendo
+    modalContent.style.transform = 'translateY(100%)';
+    
+    // Depois, reduzir a opacidade do backdrop
+    setTimeout(() => {
+        modal.classList.remove('mostrar');
+        
+        // Aguardar a animação terminar antes de esconder o modal
+        modal.addEventListener('transitionend', function handler() {
+            modal.style.display = 'none';
+            // Resetar o transform para o próximo uso
+            modalContent.style.transform = '';
+            modal.removeEventListener('transitionend', handler);
+        }, { once: true }); // once: true garante que o evento só será acionado uma vez
+    }, 50); // Pequeno delay para que a animação do conteúdo comece primeiro
     
     vendaIndexAtual = null;
 }
@@ -337,6 +428,9 @@ function confirmarPagamento(formaPagamento) {
     fecharModalPagamento();
     atualizarListaVendas();
     atualizarResumo();
+    
+    // Mostrar toast de confirmação
+    mostrarToast(`Pagamento registrado: ${formaPagamento}`, 'success');
 }
 
 function togglePagamento(index) {
@@ -358,6 +452,9 @@ function togglePagamento(index) {
         localStorage.setItem('blocos', JSON.stringify(blocos));
         atualizarListaVendas();
         atualizarResumo();
+        
+        // Mostrar toast de confirmação
+        mostrarToast('Pagamento estornado com sucesso!', 'warning');
     } else {
         // Se não está pago, mostra o modal de pagamento
         mostrarModalPagamento(index);
@@ -451,7 +548,7 @@ function editarVenda(index) {
 
     // Modificar o botão de adicionar para salvar
     const btnAdicionar = document.querySelector('.btn-adicionar-com-valor');
-    btnAdicionar.querySelector('.fixed-text').textContent = 'Salvar';
+    btnAdicionar.querySelector('.fixed-text').textContent = 'Adicionar';
     
     // Mudar o onclick do botão para salvar
     btnAdicionar.onclick = function() {
@@ -485,11 +582,12 @@ function salvarEdicao() {
     const formaPagamento = document.getElementById('pagamentoImediato').checked ? 
         document.querySelector('#formaPagamentoGroup .opcao-pagamento.ativo')?.getAttribute('data-forma') : null;
     
+    const nome = document.getElementById('nome').value;    
     const quantidade = parseInt(document.getElementById('quantidade').value);
     const valorTotal = parseFloat(document.getElementById('valor').value);
     
     const venda = {
-        nome: document.getElementById('nome').value,
+        nome: nome.toUpperCase(),
         quantidade: quantidade,
         valor: valorTotal / quantidade,
         comBebida: document.getElementById('comBebida').checked,
@@ -507,6 +605,9 @@ function salvarEdicao() {
     ocultarFormVenda();
     atualizarListaVendas();
     atualizarResumo();
+    
+    // Mostrar toast de confirmação
+    mostrarToast('Venda atualizada com sucesso!', 'success');
 }
 
 function cancelarEdicao() {
@@ -557,27 +658,44 @@ function resetarFormulario() {
 }
 
 function mostrarFormVenda() {
-    document.body.classList.add('form-venda-ativo');
-    requestAnimationFrame(() => {
-        document.getElementById('form-venda').classList.add('mostrar');
-        document.querySelector('.fab-add-venda').style.display = 'none';
+    // Prevenir que o evento se propague para o documento
+    if (event) event.stopPropagation();
+    
+    // Adicionar flag para evitar fechamento imediato
+    window.formularioRecemAberto = true;
+    
+    // Primeiro mostrar o formulário
+    const formVenda = document.getElementById('form-venda');
+    formVenda.classList.add('mostrar');
+    document.querySelector('.fab-add-venda').style.display = 'none';
+    
+    // Depois aplicar o overlay escuro com um pequeno atraso
+    setTimeout(() => {
+        document.body.classList.add('form-venda-ativo');
         document.getElementById('nome').focus();
-        
-        // Garantir que o valor seja atualizado ao abrir o formulário
         atualizarValor();
-    });
+    }, 50);
+    
+    // Remover a flag após um atraso maior
+    setTimeout(() => {
+        window.formularioRecemAberto = false;
+    }, 500);
 }
 
 function ocultarFormVenda() {
     const formVenda = document.getElementById('form-venda');
-    formVenda.classList.remove('mostrar');
-    document.querySelector('.fab-add-venda').style.display = 'flex';
     
-    // Aguardar a animação terminar antes de remover a classe do body
-    formVenda.addEventListener('transitionend', function handler() {
-        document.body.classList.remove('form-venda-ativo');
-        formVenda.removeEventListener('transitionend', handler);
-    });
+    // Primeiro remover o overlay escuro
+    document.body.classList.remove('form-venda-ativo');
+    
+    // Depois fechar o formulário com um pequeno atraso
+    setTimeout(() => {
+        formVenda.classList.remove('mostrar');
+        document.querySelector('.fab-add-venda').style.display = 'flex';
+    }, 50);
+    
+    // Não precisamos mais do event listener de transição
+    // pois estamos removendo tudo em ordem específica
 }
 
 // Inicialização do formulário e eventos
@@ -618,19 +736,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Fechar formulário ao clicar fora dele
     document.addEventListener('click', function(event) {
-        const formVenda = document.getElementById('form-venda');
-        const fabAddVenda = document.querySelector('.fab-add-venda');
-        
-        if (formVenda.classList.contains('mostrar') && 
-            !formVenda.contains(event.target) && 
-            !fabAddVenda.contains(event.target)) {
-            // Verificar se não há dados preenchidos antes de fechar
-            const nome = document.getElementById('nome').value;
-            if (!nome.trim()) {
-                ocultarFormVenda();
-            }
+    // Se o formulário foi recém-aberto OU se clicou no botão FAB, não fechar
+    if (window.formularioRecemAberto) return;
+    
+    const formVenda = document.getElementById('form-venda');
+    const fabAddVenda = document.querySelector('.fab-add-venda');
+    
+    // Se clicou no botão FAB, não feche o formulário
+    if (event.target === fabAddVenda || fabAddVenda.contains(event.target)) {
+        return;
+    }
+    
+    if (formVenda.classList.contains('mostrar') && 
+        !formVenda.contains(event.target)) {
+        // Verificar se não há dados preenchidos antes de fechar
+        const nome = document.getElementById('nome').value;
+        if (!nome.trim()) {
+            ocultarFormVenda();
         }
-    });
+    }
+});
     
     // Ajustar scroll em inputs para evitar problemas em telas pequenas
     const inputs = document.querySelectorAll('input, select');
@@ -642,10 +767,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Fechar modal ao clicar fora
+    // Fechar modais ao clicar fora
     document.getElementById('modal-pagamento').addEventListener('click', function(event) {
         if (event.target === this) {
             fecharModalPagamento();
+        }
+    });
+    
+    document.getElementById('modal-exclusao').addEventListener('click', function(event) {
+        if (event.target === this) {
+            fecharModalExclusao();
         }
     });
 });

@@ -48,9 +48,6 @@
         <p>&copy; 2024 Sistema de Controle de Lanches - Desenvolvido com carinho</p>
     </footer>
     
-    <!-- Elemento de transição de página -->
-    <div id="page-transition" class="page-transition"></div>
-
     <script src="js/home.js"></script>
     <script>
     // Detecção de orientação para melhor visualização em dispositivos móveis
@@ -70,41 +67,6 @@
     window.addEventListener('load', adjustForOrientation);
     window.addEventListener('resize', adjustForOrientation);
     window.addEventListener('orientationchange', adjustForOrientation);
-
-    // Configurar transições de página
-    document.addEventListener('DOMContentLoaded', function() {
-        // Inicialmente, ocultar a transição após o carregamento
-        setTimeout(() => {
-            document.getElementById('page-transition').classList.add('loaded');
-        }, 100);
-        
-        // Capturar cliques nos cards de menu (não desabilitados)
-        document.querySelectorAll('.menu-card:not(.disabled)').forEach(card => {
-            card.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetUrl = this.getAttribute('href');
-                
-                // Mostrar a transição
-                const transition = document.getElementById('page-transition');
-                transition.classList.remove('loaded');
-                
-                // Navegar após a transição
-                setTimeout(() => {
-                    window.location.href = targetUrl;
-                }, 100);
-            });
-        });
-    });
-    
-    // Verificar se a página foi carregada do cache (ao retornar)
-    window.addEventListener('pageshow', function(event) {
-        if (event.persisted) {
-            // Se a página foi carregada do cache (ao voltar)
-            setTimeout(() => {
-                document.getElementById('page-transition').classList.add('loaded');
-            }, 100);
-        }
-    });
     </script>
 </body>
 </html>

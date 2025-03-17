@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="pagina-config">
-    <button class="btn-voltar" onclick="window.location.href='blocos.html'" title="Voltar para Blocos">
+    <button class="btn-voltar" href="blocos.html" title="Voltar para Blocos">
         <i class="fas fa-angle-left"></i>
     </button>
     
@@ -16,7 +16,7 @@
         <h2 id="titulo-pagina">Configurar Novo Bloco de Vendas</h2>
     </div>
     
-    <form id="config-form" class="destaque">
+    <form id="config-form">
         <div class="form-group">
             <input type="text" id="nomeLanche" required placeholder=" " autocomplete="off">
             <label for="nomeLanche">Nome do Lanche</label>
@@ -70,15 +70,27 @@
 
         <div class="resumo">
             <h3>Resumo:</h3>
-            <p>Custo Total: R$ <span id="custoTotalResumo">0.00</span></p>
-            <p>Custo por Unidade: R$ <span id="custoUnitarioResumo">0.00</span></p>
-            <p>Valor Total Potencial: R$ <span id="valorPotencial">0.00</span></p>
-            <p>Lucro Potencial: R$ <span id="lucroPotencial">0.00</span></p>
+            <div class="resumo-item">
+                <span>Custo Total:</span>
+                <span>R$ <span id="custoTotalResumo">0.00</span></span>
+            </div>
+            <div class="resumo-item">
+                <span>Custo por Unidade:</span>
+                <span>R$ <span id="custoUnitarioResumo">0.00</span></span>
+            </div>
+            <div class="resumo-item">
+                <span>Valor Total Potencial:</span>
+                <span>R$ <span id="valorPotencial">0.00</span></span>
+            </div>
+            <div class="resumo-item">
+                <span>Lucro Potencial:</span>
+                <span>R$ <span id="lucroPotencial">0.00</span></span>
+            </div>
         </div>
 
         <div class="form-actions">
             <button type="submit" id="btn-salvar">Salvar e Continuar</button>
-            <button type="button" onclick="window.location.href='blocos.html'" class="btn-secundario">Cancelar</button>
+            <button type="button" href="blocos.html" class="btn-secundario">Cancelar</button>
         </div>
     </form>
 
@@ -92,6 +104,13 @@
                 this.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }, 100);
         });
+        
+        // Selecionar conteúdo ao focar
+        if (input.type === 'text' || input.type === 'number') {
+            input.addEventListener('focus', function() {
+                this.select();
+            });
+        }
     });
     </script>
 </body>

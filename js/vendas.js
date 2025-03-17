@@ -14,9 +14,127 @@ window.onload = function() {
         updateQuantity(1);
     });
 
+    // Configurar transição para o botão voltar
+    const btnVoltar = document.querySelector('.btn-voltar');
+    if (btnVoltar) {
+        btnVoltar.addEventListener('click', function(e) {
+            e.preventDefault();
+            const destino = this.getAttribute('href');
+            fazerTransicao(destino);
+        });
+    }
+
     atualizarListaVendas();
     atualizarResumo();
 };
+
+// Função para fazer a transição entre páginas
+function fazerTransicao(destino) {
+    document.body.classList.add('fade-out');
+    
+    setTimeout(() => {
+        window.location.href = destino;
+    }, 300);
+}
+
+// Inicialização do formulário e eventos
+document.addEventListener('DOMContentLoaded', function() {
+    ocultarFormVenda();
+    
+    // Define a função padrão para o botão X
+    document.querySelector('.btn-fechar').onclick = ocultarFormVenda;
+    
+    // Configurar evento de adicionar venda
+    const btnAdicionar = document.querySelector('.btn-adicionar-com-valor');
+    btnAdicionar.onclick = function() {
+        const result = adicionarVenda();
+        if (result !== false) {
+            ocultarFormVenda();
+        }
+        return result;
+    };
+    
+    // Verificar se há vendas e mostrar mensagem caso não haja
+    const verificarVendas = function() {
+        const listaVendas = document.getElementById('lista-vendas');
+        const semVendas = document.getElementById('sem-vendas');
+        
+        if (listaVendas.children.length === 0) {
+            semVendas.style.display = 'block';
+        } else {
+            semVendas.style.display = 'none';
+        }
+    };
+    
+    // Executar na inicialização
+    verificarVendas();
+    
+    // Observar mudanças na lista de vendas
+    const observer = new MutationObserver(verificarVendas);
+    observer.observe(document.getElementById('lista-vendas'), { childList: true });
+    
+    // Fechar formulário ao clicar fora dele
+    document.addEventListener('click', function(event) {
+        // Se o formulário foi recém-aberto OU se clicou no botão FAB, não fechar
+        if (window.formularioRecemAberto) return;
+        
+        const formVenda = document.getElementById('form-venda');
+        const fabAddVenda = document.querySelector('.fab-add-venda');
+        
+        // Se clicou no botão FAB, não feche o formulário
+        if (event.target === fabAddVenda || fabAddVenda.contains(event.target)) {
+            return;
+        }
+        
+        if (formVenda.classList.contains('mostrar') && 
+            !formVenda.contains(event.target)) {
+            // Verificar se não há dados preenchidos antes de fechar
+            const nome = document.getElementById('nome').value;
+            if (!nome.trim()) {
+                ocultarFormVenda();
+            }
+        }
+    });
+    
+    // Ajustar scroll em inputs para evitar problemas em telas pequenas
+    const inputs = document.querySelectorAll('input, select');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            setTimeout(() => {
+                this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 300);
+        });
+    });
+    
+    // Fechar modais ao clicar fora
+    document.getElementById('modal-pagamento')?.addEventListener('click', function(event) {
+        if (event.target === this) {
+            fecharModalPagamento();
+        }
+    });
+    
+    document.getElementById('modal-exclusao')?.addEventListener('click', function(event) {
+        if (event.target === this) {
+            fecharModalExclusao();
+        }
+    });
+
+    // Configurar links de navegação para transição
+    document.querySelectorAll('a[href]').forEach(link => {
+        // Ignorar links externos ou âncoras
+        if (link.href.startsWith(window.location.origin) && !link.href.includes('#')) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                fazerTransicao(this.href);
+            });
+        }
+    });
+
+    // Configurar botão voltar do navegador
+    window.addEventListener('popstate', function() {
+        document.body.classList.add('fade-out');
+    });
+});
 
 // Função para atualizar a quantidade
 function updateQuantity(change) {
@@ -31,19 +149,6 @@ function updateQuantity(change) {
     
     atualizarValor();
 }
-
-    // Selecionar conteúdo ao focar
-    document.getElementById('quantidade').addEventListener('focus', function() {
-        this.select();
-    });
-    
-    document.getElementById('valor').addEventListener('focus', function() {
-        this.select();
-    });
-
-    document.getElementById('nome').addEventListener('focus', function() {
-        this.select();
-    });    
 
 function carregarInfoBloco() {
     const blocoId = localStorage.getItem('blocoAtual');
@@ -708,86 +813,3 @@ function ocultarFormVenda() {
         }, 200);
     }, 100);
 }
-
-// Inicialização do formulário e eventos
-document.addEventListener('DOMContentLoaded', function() {
-    ocultarFormVenda();
-    
-    // Define a função padrão para o botão X
-    document.querySelector('.btn-fechar').onclick = ocultarFormVenda;
-    
-    // Configurar evento de adicionar venda
-    const btnAdicionar = document.querySelector('.btn-adicionar-com-valor');
-    btnAdicionar.onclick = function() {
-        const result = adicionarVenda();
-        if (result !== false) {
-            ocultarFormVenda();
-        }
-        return result;
-    };
-    
-    // Verificar se há vendas e mostrar mensagem caso não haja
-    const verificarVendas = function() {
-        const listaVendas = document.getElementById('lista-vendas');
-        const semVendas = document.getElementById('sem-vendas');
-        
-        if (listaVendas.children.length === 0) {
-            semVendas.style.display = 'block';
-        } else {
-            semVendas.style.display = 'none';
-        }
-    };
-    
-    // Executar na inicialização
-    verificarVendas();
-    
-    // Observar mudanças na lista de vendas
-    const observer = new MutationObserver(verificarVendas);
-    observer.observe(document.getElementById('lista-vendas'), { childList: true });
-    
-    // Fechar formulário ao clicar fora dele
-    document.addEventListener('click', function(event) {
-    // Se o formulário foi recém-aberto OU se clicou no botão FAB, não fechar
-    if (window.formularioRecemAberto) return;
-    
-        const formVenda = document.getElementById('form-venda');
-        const fabAddVenda = document.querySelector('.fab-add-venda');
-    
-    // Se clicou no botão FAB, não feche o formulário
-    if (event.target === fabAddVenda || fabAddVenda.contains(event.target)) {
-        return;
-    }
-        
-        if (formVenda.classList.contains('mostrar') && 
-        !formVenda.contains(event.target)) {
-            // Verificar se não há dados preenchidos antes de fechar
-            const nome = document.getElementById('nome').value;
-            if (!nome.trim()) {
-                ocultarFormVenda();
-            }
-        }
-    });
-    
-    // Ajustar scroll em inputs para evitar problemas em telas pequenas
-    const inputs = document.querySelectorAll('input, select');
-    inputs.forEach(input => {
-        input.addEventListener('focus', function() {
-            setTimeout(() => {
-                this.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 300);
-        });
-    });
-    
-    // Fechar modais ao clicar fora
-    document.getElementById('modal-pagamento').addEventListener('click', function(event) {
-        if (event.target === this) {
-            fecharModalPagamento();
-        }
-    });
-    
-    document.getElementById('modal-exclusao').addEventListener('click', function(event) {
-        if (event.target === this) {
-            fecharModalExclusao();
-        }
-    });
-});

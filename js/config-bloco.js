@@ -6,6 +6,15 @@ window.onload = function() {
     // Adicionar listener para mudança no tipo de custo
     document.getElementById('tipoCusto').addEventListener('change', toggleCamposCusto);
     
+    // Configurar transição para o botão voltar
+    const btnVoltar = document.querySelector('.btn-voltar');
+    if (btnVoltar) {
+        btnVoltar.addEventListener('click', function(e) {
+            e.preventDefault();
+            fazerTransicao('blocos.html');
+        });
+    }
+    
     if (modoEdicao === 'editar') {
         const blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
         const blocoAtual = blocos.find(b => b.id === blocoId);
@@ -90,6 +99,15 @@ function atualizarCalculos() {
     document.getElementById('lucroPotencial').textContent = lucroPotencial.toFixed(2);
 }
 
+// Função para fazer a transição entre páginas
+function fazerTransicao(destino) {
+    document.body.classList.add('fade-out');
+    
+    setTimeout(() => {
+        window.location.href = destino;
+    }, 300);
+}
+
 // Salvar configurações do bloco
 document.getElementById('config-form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -139,6 +157,34 @@ document.getElementById('config-form').addEventListener('submit', function(e) {
     // Limpar modo de edição
     localStorage.removeItem('modoEdicao');
     
-    // Redirecionar para a página de vendas
-    window.location.href = 'vendas.html';
+    // Redirecionar para a página de vendas com transição
+    fazerTransicao('vendas.html');
+});
+
+// Configurar transições para links de navegação
+document.addEventListener('DOMContentLoaded', function() {
+    // Configurar links de navegação
+    document.querySelectorAll('a[href]').forEach(link => {
+        // Ignorar links externos ou âncoras
+        if (link.href.startsWith(window.location.origin) && !link.href.includes('#')) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                fazerTransicao(this.href);
+            });
+        }
+    });
+
+    // Configurar botão canclar
+    const btnCancelar = document.querySelector('.btn-secundario');
+    if (btnCancelar) {
+        btnCancelar.addEventListener('click', function(e) {
+            e.preventDefault();
+            fazerTransicao('blocos.html');
+        });
+    }
+
+    // Configurar botão voltar do navegador
+    window.addEventListener('popstate', function() {
+        document.body.classList.add('fade-out');
+    });
 });

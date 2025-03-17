@@ -70,3 +70,31 @@ function abrirBloco(id) {
     localStorage.setItem('blocoAtual', id);
     window.location.href = 'pages/vendas.html';
 }
+
+// Função para fazer a transição entre páginas
+function fazerTransicao(destino) {
+    document.body.classList.add('fade-out');
+    
+    setTimeout(() => {
+        window.location.href = destino;
+    }, 300);
+}
+
+// Configurar transições quando a página carregar
+document.addEventListener('DOMContentLoaded', function() {
+    // Configurar links de navegação
+    document.querySelectorAll('a[href]').forEach(link => {
+        // Ignorar links externos ou âncoras
+        if (link.href.startsWith(window.location.origin) && !link.href.includes('#')) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                fazerTransicao(this.href);
+            });
+        }
+    });
+
+    // Configurar botão voltar do navegador
+    window.addEventListener('popstate', function() {
+        document.body.classList.add('fade-out');
+    });
+});

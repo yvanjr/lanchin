@@ -11,7 +11,12 @@ body {
     box-sizing: border-box;
     color: #333;
     background-color: #f8f9fa;
-    animation: fadeIn 0.3s ease-in;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+body.fade-out {
+    opacity: 0;
 }
 
 /* Reset box-sizing */
@@ -2223,25 +2228,181 @@ input:focus,
     }
 }
 
-/* Estilos para transição entre páginas */
-.page-transition {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
-    z-index: 9999;
-    opacity: 1;
-    pointer-events: none;
-    transition: opacity 0.5s ease;
-}
-
-.page-transition.loaded {
+/* Estilos para transição de página */
+.pagina-home,
+.pagina-vendas,
+.pagina-blocos {
     opacity: 0;
+    animation: fadeIn 0.3s ease-in-out forwards;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Estilos específicos para a página de configuração do bloco */
+.pagina-config {
+    background-color: #f8f9fa;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+    animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.pagina-config .header-blocos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 15px 0;
+}
+
+.pagina-config .header-blocos h2 {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin: 0;
+}
+
+.pagina-config #config-form {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 40px;
+}
+
+.pagina-config .form-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.pagina-config .form-group label {
+    color: #686b78;
+    font-weight: 500;
+}
+
+.pagina-config .form-group input,
+.pagina-config .form-group select {
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-size: 16px;
+    width: 100%;
+    background-color: #fff;
+}
+
+.pagina-config .form-group input:focus,
+.pagina-config .form-group select:focus {
+    border-color: #60b246;
+    box-shadow: 0 0 0 2px rgba(96, 178, 70, 0.1);
+}
+
+.pagina-config .campos-custo {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-left: 3px solid #60b246;
+}
+
+.pagina-config .campo-ajuda {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: 5px;
+    display: block;
+}
+
+.pagina-config .resumo {
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin: 25px 0;
+    border-left: 3px solid #60b246;
+}
+
+.pagina-config .resumo h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.pagina-config .resumo p {
+    margin: 10px 0;
+    font-size: 0.95rem;
+    color: #444;
+    display: flex;
+    justify-content: space-between;
+}
+
+.pagina-config .resumo p span {
+    font-weight: 600;
+    color: #333;
+}
+
+.pagina-config .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.pagina-config .form-actions button {
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+.pagina-config #btn-salvar {
+    background-color: #60b246;
+    color: white;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.pagina-config .btn-secundario {
+    background-color: #f0f0f0;
+    color: #686b78;
+    flex: 1;
+    margin-left: 10px;
+}
+
+/* Responsividade para a página de configuração */
+@media (max-width: 600px) {
+    .pagina-config .form-actions {
+        flex-direction: column;
+    }
+    
+    .pagina-config #btn-salvar,
+    .pagina-config .btn-secundario {
+        margin: 5px 0;
+        width: 100%;
+    }
+    
+    .pagina-config .header-blocos h2 {
+        font-size: 1.4rem;
+    }
+    
+    .pagina-config #config-form {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pagina-config .resumo p {
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+    
+    .pagina-config .resumo p span {
+        margin-top: 5px;
+    }
 }

@@ -32,18 +32,18 @@ function updateQuantity(change) {
     atualizarValor();
 }
 
-// Selecionar conteúdo ao focar
-document.getElementById('quantidade').addEventListener('focus', function() {
-    this.select();
-});
+    // Selecionar conteúdo ao focar
+    document.getElementById('quantidade').addEventListener('focus', function() {
+        this.select();
+    });
+    
+    document.getElementById('valor').addEventListener('focus', function() {
+        this.select();
+    });
 
-document.getElementById('valor').addEventListener('focus', function() {
-    this.select();
-});
-
-document.getElementById('nome').addEventListener('focus', function() {
-    this.select();
-});    
+    document.getElementById('nome').addEventListener('focus', function() {
+        this.select();
+    });    
 
 function carregarInfoBloco() {
     const blocoId = localStorage.getItem('blocoAtual');
@@ -348,15 +348,15 @@ function fecharModalExclusao() {
 function executarExclusao() {
     if (vendaParaExcluir === null) return;
     
-    const blocoId = localStorage.getItem('blocoAtual');
-    const blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
-    const blocoIndex = blocos.findIndex(b => b.id === blocoId);
-    
-    if (blocoIndex !== -1) {
+        const blocoId = localStorage.getItem('blocoAtual');
+        const blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
+        const blocoIndex = blocos.findIndex(b => b.id === blocoId);
+        
+        if (blocoIndex !== -1) {
         blocos[blocoIndex].vendas.splice(vendaParaExcluir, 1);
-        localStorage.setItem('blocos', JSON.stringify(blocos));
-        atualizarListaVendas();
-        atualizarResumo();
+            localStorage.setItem('blocos', JSON.stringify(blocos));
+            atualizarListaVendas();
+            atualizarResumo();
         
         // Mostrar toast de confirmação
         mostrarToast('Venda excluída com sucesso!', 'info');
@@ -373,7 +373,7 @@ function mostrarModalPagamento(index) {
     modal.style.display = 'flex';
     
     requestAnimationFrame(() => {
-        modal.classList.add('mostrar');
+    modal.classList.add('mostrar');
     });
     
     // Adicionar event listeners para as opções de pagamento
@@ -394,7 +394,7 @@ function fecharModalPagamento() {
     
     // Depois, reduzir a opacidade do backdrop
     setTimeout(() => {
-        modal.classList.remove('mostrar');
+    modal.classList.remove('mostrar');
         
         // Aguardar a animação terminar antes de esconder o modal
         modal.addEventListener('transitionend', function handler() {
@@ -531,6 +531,7 @@ function editarVenda(index) {
     
     if (venda.pago) {
         document.getElementById('formaPagamentoGroup').style.display = 'block';
+        document.getElementById('form-venda').classList.add('com-pagamento');
         // Marca o botão correspondente como ativo
         document.querySelectorAll('#formaPagamentoGroup .opcao-pagamento').forEach(btn => {
             if (btn.getAttribute('data-forma') === venda.formaPagamento) {
@@ -561,10 +562,14 @@ function editarVenda(index) {
         cancelarEdicao();
     };
 
-    // Mostrar o formulário e adicionar o overlay escuro
+    // Primeiro mostrar o overlay escuro
     document.body.classList.add('form-venda-ativo');
+    
+    // Mostrar o formulário com uma pequena animação suave
+    requestAnimationFrame(() => {
     document.getElementById('form-venda').classList.add('mostrar');
     document.querySelector('.fab-add-venda').style.display = 'none';
+    });
 
     // Fechar o menu de opções
     document.querySelectorAll('.venda-opcoes').forEach(op => {
@@ -581,7 +586,7 @@ function salvarEdicao() {
     const blocoIndex = blocos.findIndex(b => b.id === blocoId);
     const formaPagamento = document.getElementById('pagamentoImediato').checked ? 
         document.querySelector('#formaPagamentoGroup .opcao-pagamento.ativo')?.getAttribute('data-forma') : null;
-    
+        
     const nome = document.getElementById('nome').value;    
     const quantidade = parseInt(document.getElementById('quantidade').value);
     const valorTotal = parseFloat(document.getElementById('valor').value);
@@ -653,7 +658,7 @@ function resetarFormulario() {
     
     // Restaurar a função do botão X
     document.querySelector('.btn-fechar').onclick = ocultarFormVenda;
-    
+
     carregarInfoBloco();
 }
 
@@ -664,17 +669,21 @@ function mostrarFormVenda() {
     // Adicionar flag para evitar fechamento imediato
     window.formularioRecemAberto = true;
     
-    // Primeiro mostrar o formulário
-    const formVenda = document.getElementById('form-venda');
-    formVenda.classList.add('mostrar');
-    document.querySelector('.fab-add-venda').style.display = 'none';
+    // Primeiro mostrar o overlay escuro
+    document.body.classList.add('form-venda-ativo');
     
-    // Depois aplicar o overlay escuro com um pequeno atraso
-    setTimeout(() => {
-        document.body.classList.add('form-venda-ativo');
-        document.getElementById('nome').focus();
-        atualizarValor();
-    }, 50);
+    // Mostrar o formulário com uma pequena animação suave
+    requestAnimationFrame(() => {
+        const formVenda = document.getElementById('form-venda');
+        formVenda.classList.add('mostrar');
+    document.querySelector('.fab-add-venda').style.display = 'none';
+        
+        // Focar no campo nome
+        setTimeout(() => {
+    document.getElementById('nome').focus();
+            atualizarValor();
+        }, 150);
+    });
     
     // Remover a flag após um atraso maior
     setTimeout(() => {
@@ -685,17 +694,19 @@ function mostrarFormVenda() {
 function ocultarFormVenda() {
     const formVenda = document.getElementById('form-venda');
     
-    // Primeiro remover o overlay escuro
-    document.body.classList.remove('form-venda-ativo');
+    // Primeiro esconder o formulário
+    formVenda.classList.remove('mostrar');
     
-    // Depois fechar o formulário com um pequeno atraso
+    // Aguardar um pouco para a animação do formulário começar
     setTimeout(() => {
-        formVenda.classList.remove('mostrar');
-        document.querySelector('.fab-add-venda').style.display = 'flex';
-    }, 50);
-    
-    // Não precisamos mais do event listener de transição
-    // pois estamos removendo tudo em ordem específica
+        // Depois remover o overlay escuro
+        document.body.classList.remove('form-venda-ativo');
+        
+        // Mostrar o botão FAB após a animação concluir
+        setTimeout(() => {
+    document.querySelector('.fab-add-venda').style.display = 'flex';
+        }, 200);
+    }, 100);
 }
 
 // Inicialização do formulário e eventos
@@ -739,23 +750,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Se o formulário foi recém-aberto OU se clicou no botão FAB, não fechar
     if (window.formularioRecemAberto) return;
     
-    const formVenda = document.getElementById('form-venda');
-    const fabAddVenda = document.querySelector('.fab-add-venda');
+        const formVenda = document.getElementById('form-venda');
+        const fabAddVenda = document.querySelector('.fab-add-venda');
     
     // Se clicou no botão FAB, não feche o formulário
     if (event.target === fabAddVenda || fabAddVenda.contains(event.target)) {
         return;
     }
-    
-    if (formVenda.classList.contains('mostrar') && 
+        
+        if (formVenda.classList.contains('mostrar') && 
         !formVenda.contains(event.target)) {
-        // Verificar se não há dados preenchidos antes de fechar
-        const nome = document.getElementById('nome').value;
-        if (!nome.trim()) {
-            ocultarFormVenda();
+            // Verificar se não há dados preenchidos antes de fechar
+            const nome = document.getElementById('nome').value;
+            if (!nome.trim()) {
+                ocultarFormVenda();
+            }
         }
-    }
-});
+    });
     
     // Ajustar scroll em inputs para evitar problemas em telas pequenas
     const inputs = document.querySelectorAll('input, select');

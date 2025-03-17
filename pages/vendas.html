@@ -158,5 +158,43 @@
             <div class="toast-text"></div>
         </div>
     </div>
+    
+    <!-- Elemento de transição de página -->
+    <div id="page-transition" class="page-transition"></div>
+
+    <script>
+        // Configurar transições de página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicialmente, ocultar a transição após o carregamento
+            setTimeout(() => {
+                document.getElementById('page-transition').classList.add('loaded');
+            }, 100);
+            
+            // Capturar cliques no botão voltar para aplicar a transição
+            document.querySelector('.btn-voltar').addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetUrl = 'blocos.html';
+                
+                // Mostrar a transição
+                const transition = document.getElementById('page-transition');
+                transition.classList.remove('loaded');
+                
+                // Navegar após a transição
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 100);
+            });
+        });
+        
+        // Verificar se a página foi carregada do cache (ao retornar)
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                // Se a página foi carregada do cache (ao voltar)
+                setTimeout(() => {
+                    document.getElementById('page-transition').classList.add('loaded');
+                }, 100);
+            }
+        });
+    </script>
 </body>
 </html>

@@ -15,6 +15,15 @@ window.onload = function() {
         });
     }
     
+    // Modificar o botão cancelar para usar transição
+    const btnCancelar = document.querySelector('.btn-secundario');
+    if (btnCancelar) {
+        btnCancelar.addEventListener('click', function(e) {
+            e.preventDefault();
+            fazerTransicao('blocos.html');
+        });
+    }
+    
     if (modoEdicao === 'editar') {
         const blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
         const blocoAtual = blocos.find(b => b.id === blocoId);
@@ -53,19 +62,25 @@ window.onload = function() {
 
 function toggleCamposCusto() {
     const tipoCusto = document.getElementById('tipoCusto').value;
-    const camposUnitario = document.getElementById('campos-custo-unitario');
-    const camposTotal = document.getElementById('campos-custo-total');
+    const camposUnitario = document.querySelectorAll('.custo-unitario');
+    const camposTotal = document.querySelectorAll('.custo-total');
     
     if (tipoCusto === 'unitario') {
-        camposUnitario.style.display = 'block';
-        camposTotal.style.display = 'none';
+        // Mostrar campos de custo unitário
+        camposUnitario.forEach(campo => campo.style.display = 'block');
+        camposTotal.forEach(campo => campo.style.display = 'none');
+        
+        // Atualizar atributos required
         document.getElementById('custoUnitario').required = true;
         document.getElementById('quantidadeUnitario').required = true;
         document.getElementById('custoTotalInsumos').required = false;
         document.getElementById('quantidadeEstimada').required = false;
     } else {
-        camposUnitario.style.display = 'none';
-        camposTotal.style.display = 'block';
+        // Mostrar campos de custo total
+        camposUnitario.forEach(campo => campo.style.display = 'none');
+        camposTotal.forEach(campo => campo.style.display = 'block');
+        
+        // Atualizar atributos required
         document.getElementById('custoUnitario').required = false;
         document.getElementById('quantidadeUnitario').required = false;
         document.getElementById('custoTotalInsumos').required = true;
@@ -99,7 +114,6 @@ function atualizarCalculos() {
     document.getElementById('lucroPotencial').textContent = lucroPotencial.toFixed(2);
 }
 
-// Função para fazer a transição entre páginas
 function fazerTransicao(destino) {
     document.body.classList.add('fade-out');
     
@@ -158,33 +172,8 @@ document.getElementById('config-form').addEventListener('submit', function(e) {
     localStorage.removeItem('modoEdicao');
     
     // Redirecionar para a página de vendas com transição
-    fazerTransicao('vendas.html');
-});
-
-// Configurar transições para links de navegação
-document.addEventListener('DOMContentLoaded', function() {
-    // Configurar links de navegação
-    document.querySelectorAll('a[href]').forEach(link => {
-        // Ignorar links externos ou âncoras
-        if (link.href.startsWith(window.location.origin) && !link.href.includes('#')) {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                fazerTransicao(this.href);
-            });
-        }
-    });
-
-    // Configurar botão canclar
-    const btnCancelar = document.querySelector('.btn-secundario');
-    if (btnCancelar) {
-        btnCancelar.addEventListener('click', function(e) {
-            e.preventDefault();
-            fazerTransicao('blocos.html');
-        });
-    }
-
-    // Configurar botão voltar do navegador
-    window.addEventListener('popstate', function() {
-        document.body.classList.add('fade-out');
-    });
+    document.body.classList.add('fade-out');
+    setTimeout(() => {
+        window.location.href = 'vendas.html';
+    }, 300);
 });

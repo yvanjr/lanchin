@@ -1023,7 +1023,7 @@ button:active {
     }
 }
 
-@media screen and (max-width: 412px) {
+@media screen and (max-width: 512px) {
     .bloco-info {
         font-size: 0.85em;
         gap: 5px;
@@ -1506,14 +1506,14 @@ footer {
     overflow-y: auto;
     border: none;
     padding: 0 5px;
-    margin: 0;
+    /* margin: 0; */
     border-radius: 8px;
     background-color: transparent;
 
     position: fixed;
     top: 280px;    
     margin: 0 auto;
-    max-width: 1200px;
+    /* max-width: 1200px; */
     width: calc(100% - 20px);
     left: 0;
     right: 0;

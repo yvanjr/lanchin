@@ -1,6 +1,16 @@
 // Carregar blocos salvos quando a página carregar
 window.onload = function() {
     mostrarBlocos();
+    
+    // Fechar menus abertos ao clicar fora
+    document.addEventListener('click', function(e) {
+        const menus = document.querySelectorAll('.menu-opcoes');
+        menus.forEach(menu => {
+            if (menu.style.display === 'block') {
+                menu.style.display = 'none';
+            }
+        });
+    });
 };
 
 function criarNovoBloco() {
@@ -59,9 +69,17 @@ function mostrarBlocos() {
                     <span class="info-value ${vendasReceber > 0 ? 'destaque-receber' : ''}">${vendasReceber}</span>
                 </div>
             </div>
-            <button class="btn-config" onclick="event.stopPropagation(); editarBloco(${bloco.id})" title="Editar Configurações">
+            <button class="btn-config" onclick="event.stopPropagation(); toggleMenuOpcoes(event, ${bloco.id})" title="Opções">
                 <i class="fas fa-ellipsis-h"></i>
             </button>
+            <div id="menu-opcoes-${bloco.id}" class="menu-opcoes">
+                <div class="opcao" onclick="event.stopPropagation(); editarBloco(${bloco.id})">
+                    <i class="fas fa-edit"></i> Editar
+                </div>
+                <div class="opcao opcao-excluir" onclick="event.stopPropagation(); confirmarExclusaoBloco(${bloco.id}, '${bloco.nomeLanche}')">
+                    <i class="fas fa-trash-alt"></i> Excluir
+                </div>
+            </div>
         `;
         
         // Adicionar evento de clique ao bloco inteiro
@@ -80,4 +98,134 @@ function editarBloco(id) {
 function abrirBloco(id) {
     localStorage.setItem('blocoAtual', id);
     window.location.href = 'vendas.html';
+}
+
+function toggleMenuOpcoes(event, id) {
+    event.stopPropagation();
+    
+    // Fechar todos os outros menus primeiro
+    const menus = document.querySelectorAll('.menu-opcoes');
+    menus.forEach(menu => {
+        if (menu.id !== `menu-opcoes-${id}` && menu.style.display === 'block') {
+            menu.style.display = 'none';
+        }
+    });
+    
+    // Alternar o menu atual
+    const menu = document.getElementById(`menu-opcoes-${id}`);
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+function excluirBloco(id) {
+    // Converter o id para string para garantir comparação consistente
+    const idString = id.toString();
+    
+    let blocos = JSON.parse(localStorage.getItem('blocos') || '[]');
+    blocos = blocos.filter(bloco => bloco.id.toString() !== idString);
+    localStorage.setItem('blocos', JSON.stringify(blocos));
+    
+    // Mostrar toast de sucesso
+    mostrarToast('Bloco excluído com sucesso!', 'success');
+    
+    // Atualizar a lista de blocos
+    mostrarBlocos();
+}
+
+// Adicionar modal de confirmação de exclusão
+function confirmarExclusaoBloco(id, nome) {
+    // Criar elementos da modal
+    const modal = document.createElement('div');
+    modal.className = 'modal-exclusao';
+    modal.id = 'modal-exclusao-bloco';
+    
+    modal.innerHTML = `
+        <div class="modal-conteudo">
+            <div class="modal-header">
+                <h3>Confirmar Exclusão</h3>
+                <button class="btn-fechar-modal" onclick="fecharModalExclusaoBloco()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja excluir o bloco "${nome}"?</p>
+                <p class="aviso-exclusao">Todas as vendas associadas a este bloco serão excluídas permanentemente.</p>
+            </div>
+            <div class="modal-acoes-confirmacao">
+                <button class="btn-confirmar-exclusao" onclick="executarExclusaoBloco(${id})">Excluir</button>
+            </div>
+        </div>
+    `;
+    
+    // Verificar se já existe uma modal e remover
+    const modalExistente = document.getElementById('modal-exclusao-bloco');
+    if (modalExistente) {
+        modalExistente.remove();
+    }
+    
+    // Adicionar modal ao body
+    document.body.appendChild(modal);
+    
+    // Mostrar a modal
+    setTimeout(() => {
+        modal.classList.add('mostrar');
+    }, 10);
+    
+    // Configurar para fechar ao clicar fora
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            fecharModalExclusaoBloco();
+        }
+    });
+}
+
+// Função para fechar a modal de exclusão
+function fecharModalExclusaoBloco() {
+    const modal = document.getElementById('modal-exclusao-bloco');
+    if (modal) {
+        modal.classList.remove('mostrar');
+        setTimeout(() => {
+            modal.remove();
+        }, 300);
+    }
+}
+
+// Função para executar a exclusão após confirmação
+function executarExclusaoBloco(id) {
+    excluirBloco(id);
+    fecharModalExclusaoBloco();
+}
+
+// Função para mostrar toast
+function mostrarToast(mensagem, tipo = 'success', duracao = 3000) {
+    // Verificar se já existe um toast e remover
+    const toastExistente = document.querySelector('.toast');
+    if (toastExistente) {
+        toastExistente.remove();
+    }
+    
+    // Criar o elemento toast
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${tipo}`;
+    toast.innerHTML = `
+        <div class="toast-conteudo">
+            <i class="fas ${tipo === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            <span>${mensagem}</span>
+        </div>
+    `;
+    
+    // Adicionar toast ao body
+    document.body.appendChild(toast);
+    
+    // Mostrar toast com animação
+    setTimeout(() => {
+        toast.classList.add('mostrar');
+    }, 10);
+    
+    // Esconder toast após a duração
+    setTimeout(() => {
+        toast.classList.remove('mostrar');
+        setTimeout(() => {
+            toast.remove();
+        }, 300);
+    }, duracao);
 } 

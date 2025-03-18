@@ -1019,11 +1019,11 @@ button:active {
     }
 
     .lista-vendas-container {
-        max-height: 587px;
+        max-height: 1000px;
     }
 }
 
-@media screen and (max-width: 512px) {
+@media screen and (max-width: 412px) {
     .bloco-info {
         font-size: 0.85em;
         gap: 5px;
@@ -1502,18 +1502,18 @@ footer {
 }
 
 .pagina-vendas .lista-vendas-container:first-of-type {
-    /* max-height: calc(100vh - 295px); */
+    max-height: calc(100vh - 295px);
     overflow-y: auto;
     border: none;
     padding: 0 5px;
-    /* margin: 0; */
+    margin: 0;
     border-radius: 8px;
     background-color: transparent;
 
     position: fixed;
     top: 280px;    
     margin: 0 auto;
-    /* max-width: 1200px; */
+    max-width: 1200px;
     width: calc(100% - 20px);
     left: 0;
     right: 0;
@@ -2154,78 +2154,158 @@ input:focus,
     }
 }
 
-/* Estilos para o Toast */
-.toast-container {
+/* Estilos para o toast */
+.toast {
     position: fixed;
-    top: 50%;
+    top: 20px;
     left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2000;
-    pointer-events: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.toast-container.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.toast-message {
-    display: flex;
-    align-items: center;
-    background-color: #333;
-    color: white;
-    padding: 16px 20px;
+    transform: translateX(-50%) translateY(-20px);
+    padding: 0;
+    background: white;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    min-width: 280px;
-    max-width: 80vw;
+    z-index: 1001;
+    opacity: 0;
+    transition: all 0.3s ease;
+    max-width: 90%;
+    width: auto;
+    pointer-events: none;
+}
+
+.toast.mostrar {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.toast-conteudo {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 8px;
+    color: #333;
+}
+
+.toast-success {
+    border-left: 4px solid #28a745;
+}
+
+.toast-success i {
+    color: #28a745;
+}
+
+.toast-error {
+    border-left: 4px solid #d9534f;
+}
+
+.toast-error i {
+    color: #d9534f;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 480px) {
+    .toast {
+        width: 80%;
+        max-width: 320px;
+    }
+}
+
+/* Estilos para a modal de confirmação de exclusão */
+.modal-exclusao {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.modal-exclusao.mostrar {
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
     pointer-events: auto;
 }
 
-.toast-icon {
-    margin-right: 12px;
-    font-size: 20px;
-    color: #4CAF50;
-    flex-shrink: 0;
+.modal-conteudo {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(20px);
+    transition: all 0.3s ease;
 }
 
-.toast-icon.success i {
-    color: #4CAF50;
+.modal-exclusao.mostrar .modal-conteudo {
+    transform: translateY(0);
 }
 
-.toast-icon.error i {
-    color: #dc3545;
+.modal-header {
+    padding: 16px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.toast-icon.info i {
-    color: #17a2b8;
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333;
 }
 
-.toast-icon.warning i {
-    color: #ffc107;
+.btn-fechar-modal {
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.toast-text {
-    font-size: 15px;
+.btn-fechar-modal:hover {
+    color: #333;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.aviso-exclusao {
+    color: #d9534f;
+    font-size: 0.875rem;
+    margin-top: 10px;
+}
+
+.modal-acoes-confirmacao {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #eee;
+}
+
+.btn-confirmar-exclusao {
+    padding: 10px 24px;
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 6px;
     font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
-@media (max-width: 480px) {
-    .toast-message {
-        min-width: 250px;
-        padding: 12px 16px;
-    }
-    
-    .toast-icon {
-        font-size: 18px;
-    }
-    
-    .toast-text {
-        font-size: 14px;
-    }
+.btn-confirmar-exclusao:hover {
+    background-color: #c9302c;
 }
 
 /* Estilos para transição de página */
@@ -2247,7 +2327,7 @@ input:focus,
 
 /* Estilos para a página de configuração */
     .pagina-config {
-    padding: 20px;
+        padding: 20px;
     max-width: 600px;
     margin: 0 auto;
 }
@@ -2382,7 +2462,7 @@ input:focus,
     .pagina-config #config-form {
         padding: 20px;
     }
-    
+
     .pagina-config .form-actions {
         flex-direction: column;
     }
@@ -2447,4 +2527,47 @@ input:focus,
     border-left: 2px solid #ddd;
     margin-left: 4px;
     margin-top: 8px;
+}
+
+/* Estilos para o menu de opções dos blocos */
+.menu-opcoes {
+    position: absolute;
+    top: 40px;
+    right: 10px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    display: none;
+    overflow: hidden;
+    min-width: 150px;
+}
+
+.opcao {
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.opcao:hover {
+    background-color: #f5f5f5;
+}
+
+.opcao-excluir {
+    color: #d9534f;
+}
+
+.opcao-excluir:hover {
+    background-color: #ffecec;
+}
+
+.opcao i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
 }

@@ -13,11 +13,37 @@ window.onload = function() {
     });
 };
 
+// Configuração da visualização quando a página carrega
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar se há blocos e ajustar a visualização para telas menores
+    const ajustarVisualizacao = function() {
+        // Verificar largura da tela
+        if (window.innerWidth <= 480) {
+            // Ajustar visualização para telas pequenas
+            const blocos = document.querySelectorAll('.bloco-vendas');
+            blocos.forEach(bloco => {
+                // Garantir que o texto não quebre a interface
+                const header = bloco.querySelector('.bloco-header h3');
+                if (header && header.textContent.length > 25) {
+                    header.title = header.textContent;
+                    header.textContent = header.textContent.substring(0, 22) + '...';
+                }
+            });
+        }
+    };
+    
+    // Executar após carregar blocos
+    setTimeout(ajustarVisualizacao, 300);
+    
+    // Ajustar ao redimensionar a tela
+    window.addEventListener('resize', ajustarVisualizacao);
+});
+
 function criarNovoBloco() {
     const blocoId = Date.now(); // ID único para o bloco
     localStorage.setItem('blocoAtual', blocoId);
     localStorage.setItem('modoEdicao', 'novo');
-    window.location.href = 'config-bloco.html';
+    fazerTransicao('config-bloco.html');
 }
 
 function mostrarBlocos() {
@@ -41,7 +67,7 @@ function mostrarBlocos() {
         elemento.className = 'bloco-vendas';
         
         const data = new Date(parseInt(bloco.id));
-        const dataFormatada = data.toLocaleDateString();
+        const dataFormatada = formatarData(parseInt(bloco.id));
         
         // Calcular vendas pagas e a receber
         const vendasPagas = bloco.vendas?.filter(v => v.pago)?.length || 0;
@@ -92,12 +118,12 @@ function mostrarBlocos() {
 function editarBloco(id) {
     localStorage.setItem('blocoAtual', id);
     localStorage.setItem('modoEdicao', 'editar');
-    window.location.href = 'config-bloco.html';
+    fazerTransicao('config-bloco.html');
 }
 
 function abrirBloco(id) {
     localStorage.setItem('blocoAtual', id);
-    window.location.href = 'vendas.html';
+    fazerTransicao('vendas.html');
 }
 
 function toggleMenuOpcoes(event, id) {

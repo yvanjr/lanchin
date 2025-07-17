@@ -58,6 +58,9 @@ window.onload = function() {
     });
     
     atualizarCalculos();
+    
+    // Ajustar scroll em inputs para evitar problemas em telas pequenas
+    configurarScrollInputs();
 };
 
 function toggleCamposCusto() {
@@ -114,14 +117,6 @@ function atualizarCalculos() {
     document.getElementById('lucroPotencial').textContent = lucroPotencial.toFixed(2);
 }
 
-function fazerTransicao(destino) {
-    document.body.classList.add('fade-out');
-    
-    setTimeout(() => {
-        window.location.href = destino;
-    }, 300);
-}
-
 // Salvar configurações do bloco
 document.getElementById('config-form').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -172,8 +167,5 @@ document.getElementById('config-form').addEventListener('submit', function(e) {
     localStorage.removeItem('modoEdicao');
     
     // Redirecionar para a página de vendas com transição
-    document.body.classList.add('fade-out');
-    setTimeout(() => {
-        window.location.href = 'vendas.html';
-    }, 300);
+    fazerTransicao('vendas.html');
 });

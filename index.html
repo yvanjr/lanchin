@@ -24,7 +24,7 @@
         </div>
 
         <div class="menu-cards">
-            <a href="pages/blocos.html" class="menu-card">
+            <a href="blocos.html" class="menu-card">
                 <i class="fas fa-list-alt"></i>
                 <h3>Blocos de Vendas</h3>
                 <p>Acesse e gerencie todos os blocos de vendas cadastrados</p>
@@ -48,25 +48,8 @@
         <p>&copy; 2024 Sistema de Controle de Lanches - Desenvolvido com carinho</p>
     </footer>
     
+    <script src="js/utils.js"></script>
+    <script src="js/models.js"></script>
     <script src="js/home.js"></script>
-    <script>
-    // Detecção de orientação para melhor visualização em dispositivos móveis
-    function adjustForOrientation() {
-        const container = document.querySelector('.welcome-container');
-        
-        if (window.matchMedia("(orientation: landscape) and (max-height: 500px)").matches) {
-            container.style.flexDirection = 'row';
-        } else if (window.innerWidth < 900) {
-            container.style.flexDirection = 'column';
-        } else {
-            container.style.flexDirection = 'row';
-        }
-    }
-    
-    // Executar no carregamento e quando houver mudança de orientação
-    window.addEventListener('load', adjustForOrientation);
-    window.addEventListener('resize', adjustForOrientation);
-    window.addEventListener('orientationchange', adjustForOrientation);
-    </script>
 </body>
 </html>

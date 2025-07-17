@@ -2,7 +2,27 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Carregar contadores e estatísticas básicas
     carregarEstatisticasBasicas();
+    
+    // Configurar detecção de orientação para melhor visualização em dispositivos móveis
+    adjustForOrientation();
+    
+    // Executar no carregamento e quando houver mudança de orientação
+    window.addEventListener('resize', adjustForOrientation);
+    window.addEventListener('orientationchange', adjustForOrientation);
 });
+
+// Detecção de orientação para melhor visualização em dispositivos móveis
+function adjustForOrientation() {
+    const container = document.querySelector('.welcome-container');
+    
+    if (window.matchMedia("(orientation: landscape) and (max-height: 500px)").matches) {
+        container.style.flexDirection = 'row';
+    } else if (window.innerWidth < 900) {
+        container.style.flexDirection = 'column';
+    } else {
+        container.style.flexDirection = 'row';
+    }
+}
 
 function carregarEstatisticasBasicas() {
     // Carregar blocos do localStorage

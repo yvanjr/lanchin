@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Configurar Bloco de Vendas - Igreja</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="pagina-config">
+    <button class="btn-voltar" onclick="window.location.href='blocos.html'" title="Voltar para Blocos">
+        <i class="fas fa-angle-left"></i>
+    </button>
+    
+    <div class="header-blocos">
+        <h2 id="titulo-pagina">Configurar Novo Bloco de Vendas</h2>
+    </div>
+    
+    <form id="config-form" class="destaque">
+        <div class="form-group">
+            <input type="text" id="nomeLanche" required placeholder=" " autocomplete="off">
+            <label for="nomeLanche">Nome do Lanche</label>
+        </div>
+
+        <div class="form-group">
+            <select id="tipoCusto" required>
+                <option value="">Selecione o tipo</option>
+                <option value="unitario">Por Unidade (ex: Salgados prontos)</option>
+                <option value="total">Total dos Insumos (ex: Pastel)</option>
+            </select>
+            <label for="tipoCusto">Tipo de Custo</label>
+        </div>
+        
+        <!-- Campos para custo unitário -->
+        <div class="form-group custo-unitario">
+            <input type="number" id="custoUnitario" step="0.01" required placeholder=" " inputmode="decimal">
+            <label for="custoUnitario">Custo por Unidade (R$)</label>
+        </div>
+
+        <div class="form-group custo-unitario">
+            <input type="number" id="quantidadeUnitario" required placeholder=" " inputmode="numeric">
+            <label for="quantidadeUnitario">Quantidade Comprada</label>
+        </div>
+
+        <!-- Campos para custo total -->
+        <div class="form-group custo-total" style="display: none;">
+            <input type="number" id="custoTotalInsumos" step="0.01" required placeholder=" " inputmode="decimal">
+            <label for="custoTotalInsumos">Custo Total dos Insumos (R$)</label>
+        </div>
+
+        <div class="form-group custo-total" style="display: none;">
+            <input type="number" id="quantidadeEstimada" required placeholder=" " inputmode="numeric">
+            <label for="quantidadeEstimada">Quantidade Estimada de Lanches</label>
+            <small class="campo-ajuda">Quantidade aproximada de lanches que serão feitos com esses insumos</small>
+        </div>
+
+        <div class="form-group">
+            <input type="number" id="valorVenda" step="0.01" required placeholder=" " inputmode="decimal">
+            <label for="valorVenda">Valor de Venda (R$)</label>
+        </div>
+
+        <div class="form-group">
+            <input type="number" id="valorBebida" step="0.01" required placeholder=" " inputmode="decimal">
+            <label for="valorBebida">Valor Adicional da Bebida (R$)</label>
+        </div>
+
+        <div class="resumo">
+            <h3>Resumo:</h3>
+            <p>Custo Total: R$ <span id="custoTotalResumo">0.00</span></p>
+            <p>Custo por Unidade: R$ <span id="custoUnitarioResumo">0.00</span></p>
+            <p>Valor Total Potencial: R$ <span id="valorPotencial">0.00</span></p>
+            <p>Lucro Potencial: R$ <span id="lucroPotencial">0.00</span></p>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" id="btn-salvar" class="btn-adicionar">Salvar e Continuar</button>
+            <button type="button" class="btn-secundario">Cancelar</button>
+        </div>
+    </form>
+
+    <script src="js/utils.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/config-bloco.js"></script>
+</body>
+</html> 

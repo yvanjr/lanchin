@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vendas - Controle de Lanches</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="pagina-vendas">
+    <button class="btn-voltar" onclick="window.location.href='blocos.html'" title="Voltar para Blocos">
+        <i class="fas fa-angle-left"></i>
+    </button>
+    
+    <div class="destaque">
+        <div class="bloco-header">
+            <div class="header-principal">
+                <h2 id="info-bloco">Vendas do Dia</h2>
+                <p id="config-info" class="bloco-valores"></p>
+            </div>
+            <div class="resumo-header">
+                <div class="resumo-item">
+                    <span class="resumo-label">Vendido</span>
+                    <span class="resumo-valor">R$ <span id="totalVendido">0.00</span></span>
+                </div>
+                <div class="resumo-item">
+                    <span class="resumo-label">Pago</span>
+                    <span class="resumo-valor">R$ <span id="totalRecebido">0.00</span></span>
+                </div>
+                <div class="resumo-item">
+                    <span class="resumo-label">Pendente</span>
+                    <span class="resumo-valor destaque-receber">R$ <span id="totalReceber">0.00</span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="form-venda" class="destaque form-venda">
+        <button class="btn-fechar" onclick="ocultarFormVenda()" title="Fechar">
+            <i class="fas fa-times"></i>
+        </button>
+        <h3 class="form-title">Nova Venda</h3>
+        
+        <div class="form-row">
+            <div class="form-group floating-label">
+                <input type="text" id="nome" required placeholder=" " autocomplete="off">
+                <label for="nome">Nome do Cliente</label>
+            </div>
+        </div>
+            
+        <div class="new-controls-container">
+            <div class="controles-principais">
+                <div class="quantity-selector">
+                    <button type="button" class="btn-quantity" id="btn-decrease">-</button>
+                    <span id="quantity-display">1</span>
+                    <button type="button" class="btn-quantity" id="btn-increase">+</button>
+                    <input type="hidden" id="quantidade" value="1">
+                </div>
+                
+                <button class="btn-adicionar-com-valor">
+                    <span class="fixed-text">Adicionar</span>
+                    <span id="valor-display">R$ 0,00</span>
+                </button>
+                <input type="hidden" id="valor" value="">
+            </div>
+            
+            <div class="checkbox-group">
+                <label class="checkbox-container">
+                    <input type="checkbox" id="comBebida" checked> 
+                    <span class="checkbox-text">Com Bebida</span>
+                </label>
+                <label class="checkbox-container">
+                    <input type="checkbox" id="pagamentoImediato"> 
+                    <span class="checkbox-text">Pagamento Imediato</span>
+                </label>
+            </div>
+
+            <div class="form-group" id="formaPagamentoGroup" style="display: none;">
+                <div class="opcoes-pagamento">
+                    <button type="button" class="opcao-pagamento" data-forma="dinheiro">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Dinheiro</span>
+                    </button>
+                    <button type="button" class="opcao-pagamento" data-forma="pix">
+                        <i class="fas fa-qrcode"></i>
+                        <span>PIX</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <div class="botoes-nova-venda">
+                    <!-- Botão de Adicionar foi movido para cima -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="vendas-container">
+        <h2 class="titulo-lista-vendas">Vendas do Dia</h2>
+        <div class="lista-vendas-container">
+            <div id="lista-vendas"></div>
+        </div>
+        
+        <!-- Mensagem para quando não há vendas -->
+        <div id="sem-vendas" class="mensagem-vazia" style="display: none;">
+            <p>Não há vendas registradas neste bloco.</p>
+            <p>Clique no botão '+' para adicionar uma venda.</p>
+        </div>
+    </div>
+
+    <button class="fab fab-add-venda" onclick="mostrarFormVenda()" title="Nova Venda">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <script src="js/utils.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/vendas.js"></script>
+
+    <!-- Modal de Forma de Pagamento -->
+    <div id="modal-pagamento" class="modal">
+        <div class="modal-content">
+            <button class="btn-fechar" onclick="fecharModalPagamento()" title="Fechar">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3>Forma de Pagamento</h3>
+            <div class="opcoes-pagamento">
+                <button class="opcao-pagamento" data-forma="dinheiro">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Dinheiro</span>
+                </button>
+                <button class="opcao-pagamento" data-forma="pix">
+                    <i class="fas fa-qrcode"></i>
+                    <span>PIX</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div id="modal-exclusao" class="modal">
+        <div class="modal-content">
+            <button class="btn-fechar" onclick="fecharModalExclusao()" title="Fechar">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3>Confirmar Exclusão</h3>
+            <p class="modal-mensagem">Tem certeza que deseja excluir esta venda?</p>
+            <div class="modal-acoes-confirmacao">
+                <button class="btn-confirmar-exclusao" onclick="executarExclusao()">Excluir</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Componente Toast para mensagens -->
+    <div id="toast-container" class="toast-container">
+        <div id="toast-message" class="toast-message">
+            <div class="toast-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="toast-text"></div>
+        </div>
+    </div>
+</body>
+</html> 

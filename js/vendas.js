@@ -226,6 +226,7 @@ function atualizarValor() {
 // Função para mostrar toast
 function mostrarToast(mensagem, tipo = 'success', duracao = 3000) {
     const toastContainer = document.getElementById('toast-container');
+    const toastMessage = document.getElementById('toast-message');
     const toastText = document.querySelector('.toast-text');
     const toastIcon = document.querySelector('.toast-icon');
     
@@ -237,8 +238,19 @@ function mostrarToast(mensagem, tipo = 'success', duracao = 3000) {
         warning: 'fa-exclamation-circle'
     };
     
+    // Definir as cores das bordas de acordo com o tipo
+    const borderColors = {
+        success: '#28a745',
+        error: '#d9534f',
+        info: '#17a2b8',
+        warning: '#ffc107'
+    };
+    
     toastIcon.innerHTML = `<i class="fas ${icones[tipo]}"></i>`;
     toastIcon.className = 'toast-icon ' + tipo;
+    
+    // Definir a cor da borda esquerda
+    toastMessage.style.borderLeftColor = borderColors[tipo];
     
     // Definir o texto
     toastText.textContent = mensagem;
